@@ -1,9 +1,9 @@
 #include "Precompiled.hpp"
 #include "Bar.hpp"
-#include "MainWindow.hpp"
+#include "MainDialog.hpp"
 #include "UiInterface.hpp"
 
-ProgressBar::ProgressBar(MainWindow& main_window)
+ProgressBar::ProgressBar(CMainDlg& main_window)
     :main_window_(main_window), length_(0)//,
 {}
 

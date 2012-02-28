@@ -212,7 +212,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainWindow.cpp"
+				RelativePath=".\MainDialog.cpp"
 				>
 			</File>
 			<File
@@ -289,7 +289,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainWindow.hpp"
+				RelativePath=".\MainDialog.hpp"
 				>
 			</File>
 			<File

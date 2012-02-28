@@ -5,7 +5,7 @@
 #include "Player.hpp"
 #include "Utils.hpp"
 #include "Ui.hpp"
-class MainWindow;
+class CMainDlg;
 
 class ProgressBar:public CWindowImpl<ProgressBar, CWindow, CControlWinTraits>
 {
@@ -22,7 +22,7 @@ public:
     END_MSG_MAP()
 
 
-    ProgressBar(MainWindow& main_window);
+    ProgressBar(CMainDlg& main_window);
 
     LRESULT OnSetCursor(HWND , UINT , UINT );
     int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -49,7 +49,7 @@ private:
     void DrawRectangle(Graphics& gfx, Brush* brush, long from, long to);
     void DrawLine(Graphics& gfx, Brush* brush, long from, long to);
 private:
-    MainWindow& main_window_;
+    CMainDlg& main_window_;
     Rect rect0_, rect1_, rect2_;
 
     //UI style related

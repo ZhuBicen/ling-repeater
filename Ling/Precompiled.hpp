@@ -28,7 +28,7 @@ extern CAppModule _Module;
 #include <atlctrls.h>
 #include <atlframe.h>
 //#include <atlstdthunk.h>
-#include "resource.h"
+
 
 //GDI plus
 #include <gdiplus.h>
