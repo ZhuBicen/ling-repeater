@@ -39,11 +39,11 @@ PIN_NORMAL         RCDATA         ".\\res\\pin_normal.png"
 
 
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-PLAY_NORMAL        RCDATA         ".\\res\\play_normal.png"
+PLAY_HOVER         RCDATA         ".\\res\\play_hover.png"
 
 
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-PLAY_HOVER         RCDATA         ".\\res\\play_hover.png"
+PLAY_NORMAL        RCDATA         ".\\res\\play_normal.png"
 
 
 
@@ -92,9 +92,9 @@ STYLE DS_3DLOOK | DS_CENTER | DS_SHELLFONT | WS_BORDER | WS_VISIBLE | WS_POPUP |
 EXSTYLE WS_EX_TOOLWINDOW
 FONT 8, "Ms Shell Dlg"
 {
-    CONTROL         "ÍË³ö", IDOK, WC_BUTTON, WS_TABSTOP | WS_TABSTOP | BS_OWNERDRAW, 333, 0, 15, 15
+    CONTROL         "ÍË³ö", IDOK, WC_BUTTON, WS_TABSTOP | WS_TABSTOP | BS_OWNERDRAW, 335, 0, 14, 14
     LTEXT           "·çÓï", IDC_FILENAME, 19, 3, 263, 8, SS_LEFT
-    CONTROL         "OK", ID_PLAY, WC_BUTTON, WS_TABSTOP | WS_TABSTOP | BS_OWNERDRAW, 316, 0, 15, 15
+    CONTROL         "OK", ID_PLAY, WC_BUTTON, WS_TABSTOP | WS_TABSTOP | BS_OWNERDRAW, 319, 0, 14, 14
     CONTROL         "", IDC_PROGRESSBAR, PROGRESS_CLASS, 0, 0, 15, 351, 11
 }
 

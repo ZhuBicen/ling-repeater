@@ -53,7 +53,7 @@ private:
     Rect rect0_, rect1_, rect2_;
 
     //UI style related
-    LinearGradientBrush* play_brush_, *repeat_brush_;
+    /*LinearGradientBrush*/SolidBrush* play_brush_, *repeat_brush_;
     SolidBrush* background_brush_, *section_brush_;;
 
     //file info
