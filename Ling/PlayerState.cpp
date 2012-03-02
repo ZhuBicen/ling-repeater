@@ -95,16 +95,7 @@ fsm::result NormalPlayingState::react( const SetPosEvent& evt){
 }
 
 fsm::result NormalPlayingState::react( const PlayFinishedEvent& evt){
-    //这里总会出现问题，当从重复状态转到正常状态时，重复状态的结束会产生此消息
-    //从而产生了混乱。。normal状态处理些消息的目的，是为了循环播放而已
-    if(context< PlayerFsm >().player_.IsPlaying()) 
-    {
-        LOG(logINFO) << " Current player is playing , ignore this event";
-        return fsm::detail::result_utility::make_result( fsm::detail::consumed ); 
-    }else{
-        LOG(logINFO) <<" PlayFinishedEvent received and will be consumed, is this what you want?????";
-    }
-
+    LOG(logINFO) << __FUNCTION__;
     PaintInfo* pi = new PaintInfo();
     pi->current_pos_ = 0;
     context< PlayerFsm >().ui_->DrawBar(pi);
@@ -181,12 +172,6 @@ fsm::result RepeatedPlayingState::react( const PlayFinishedEvent& evt)
 {
     //just for loop playing
     LOG(logINFO) << __FUNCTION__ << "PlayFinishedEvent" ;
-    if(context< PlayerFsm >().player_.IsPlaying()) 
-    {
-        LOG(logINFO) << "Current player is playing , ignore this event" ;
-        return fsm::detail::result_utility::make_result( fsm::detail::consumed ); 
-    }
-
     Repeat(); 
     return fsm::detail::result_utility::make_result( fsm::detail::consumed ); 
 }
@@ -204,7 +189,7 @@ fsm::result RepeatedPlayingState::react( const SetPosEvent& evt){
     }
     context< HandlingFileState >().SetStartPos(start_pos);
     context< HandlingFileState >().SetEndPos(end_pos);
-    
+    context< PlayerFsm >().player_.Stop();    
     Repeat();
 
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );        

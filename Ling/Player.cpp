@@ -18,10 +18,6 @@ ZplayCallbackFunc(void* instance, void *user_data, TCallbackMessage message,
             mq->PutMessage(boost::shared_ptr<Message>(new PlayFinishedEvent()));
             LOG(logINFO)<< __FUNCTION__ << "<<MsgStop, Emit the Play finished>>"; 
             break;
-        case MsgExitLoopAsync :
-            //LOG(logINFO)<< __FUNCTION__ << "OneLoop Play finished event callback===========================" << std::endl;
-            //mq->PutMessage(boost::shared_ptr<Message>(new OneLoopFinishedEvent()));
-            break;
 		return 0;	
 	}
 
@@ -30,7 +26,6 @@ ZplayCallbackFunc(void* instance, void *user_data, TCallbackMessage message,
 
 Player::Player(MessageQueue* mq):mq_(mq){
     player_ = CreateZPlay();
-    player_->SetCallbackFunc(ZplayCallbackFunc, (TCallbackMessage)(MsgStop) , mq);
 	//no sound card found
 	assert(player_->EnumerateWaveOut() != 0);
 }
@@ -46,6 +41,7 @@ bool Player::CloseFile(){
     return player_->Close() != 0;
 }
 bool Player::Play(){
+    player_->SetCallbackFunc(ZplayCallbackFunc, (TCallbackMessage)(MsgStop) , mq_);    
     return player_->Play() != 0;
 }
 
@@ -65,6 +61,7 @@ bool Player::Play(long start_pos, long end_pos)
     end_time.ms = end_pos;
     
     int ret = player_->PlayLoop(tfMillisecond, &start_time, tfMillisecond, &end_time, 1, 0);
+    player_->SetCallbackFunc(ZplayCallbackFunc, (TCallbackMessage)(MsgStop) , mq_);    
     if( ret == 1){return true;}
     else{
         LOG(logERROR) << "libzplay::PlayLoop failed error info:" << player_->GetError() ;
@@ -91,21 +88,6 @@ long Player::GetCurrentPos()
     return pos.ms;
 }
 
-//bool Player::PlayFrom(long pos)
-//{
-//    TStreamTime start_time;
-//    start_time.ms = pos;
-//
-//    TStreamTime end_time;
-//    end_time.ms = GetFileLength();
-//    
-//    int ret = player_->PlayLoop(tfMillisecond, &start_time, tfMillisecond, &end_time, 1, 0);
-//    if( ret == 1){return true;}
-//    else{
-//        std::cerr << "libzplay::PlayLoop failed error info:" << player_->GetError() << std::endl;
-//        return false;
-//    }
-//}
 bool Player::Pause()
 {
     return player_->Pause() == 1;
@@ -115,12 +97,13 @@ bool Player::Resume()
 {
     return player_->Resume() == 1;
 }
+//当我主动的去关掉播放时，比如从重复状态转到正常播放状态，或者相反，我不在希望收到此消息
+//但是当播放完成之后，内容从头尾播放完成，我希望得到些消息，从而进行一步操作，一般来说是重复播放下一遍
 bool Player::Stop()
 {
+    player_->SetCallbackFunc(NULL, (TCallbackMessage)(MsgStop) , mq_);    
     return player_->Stop() == 1;
 }
-
-
 bool Player::IsPlaying()
 {
     TStreamStatus st;
