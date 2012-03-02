@@ -4,6 +4,8 @@
 
 #define IDR_MAINFRAME                           133
 #define IDD_ABOUTBOX                            136
+#define IDD_MAINDLG                             138
+#define ID_PLAY                                 1000
 #define IDM_ABOUT                               40000
 #define IDM___2                                 40001
 #define IDB_A                                   40002
@@ -12,3 +14,5 @@
 #define IDM_PAUSE_RESUME                        40005
 #define IDB_PIN                                 40006
 #define IDB_MARK                                40007
+#define IDC_PROGRESSBAR                         40015
+#define IDC_FILENAME                            40016

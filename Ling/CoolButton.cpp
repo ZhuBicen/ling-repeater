@@ -18,24 +18,29 @@ void CoolButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     LOG(logDEBUG1) << "CoolButton::DrawItem()" ;
     HDC hdc = lpDrawItemStruct->hDC;
     RECT rect = lpDrawItemStruct->rcItem;
+    rect_ = Rect(rect.left, rect.top, rect.right, rect.bottom);
 
-    Rect rc(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-    rect_ = rc;
+    int width = rect.right - rect.left;
+    int height = (rect.bottom - rect.top) ;
+    int min = height < width ? height : width;
+
+    Rect rc(rect.left, rect.top,  min, min );
+    rect2_ = rc;
 
     Graphics gfx(hdc);
     DrawBackground(gfx);
 
     if( lpDrawItemStruct->itemState & ODS_FOCUS ){
         DrawBackground(gfx);
-        gfx.DrawImage(normal_image_, rect_);
+        gfx.DrawImage(normal_image_, rect2_);
     }
     if( lpDrawItemStruct->itemState & ODS_SELECTED){
         DrawBackground(gfx);
-        gfx.DrawImage(hover_image_, rect_);
+        gfx.DrawImage(hover_image_, rect2_);
      }
      else{
          DrawBackground(gfx);
-         gfx.DrawImage(normal_image_, rect_);
+         gfx.DrawImage(normal_image_, rect2_);
      }
     
     
@@ -46,7 +51,7 @@ LONG CoolButton::OnMouseHover(UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandl
     HDC dc = GetDC();
     Graphics gfx(dc);
     DrawBackground(gfx);
-	gfx.DrawImage(hover_image_, rect_);
+	gfx.DrawImage(hover_image_, rect2_);
     return 0;
 }
 

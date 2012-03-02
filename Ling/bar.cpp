@@ -3,7 +3,7 @@
 #include "MainWindow.hpp"
 #include "UiInterface.hpp"
 
-ProgressBar::ProgressBar(MainWindow& main_window)
+ProgressBar::ProgressBar(CMainDlg& main_window)
     :main_window_(main_window), length_(0)//,
 {}
 
@@ -18,8 +18,8 @@ int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
     rc.Inflate(-1, -1);
     rect0_ = rc;
     //从内到外，分别为rect0_, rect1_, rect2_
-    play_brush_ = new LinearGradientBrush(rect0_, Color(230, 77, 77), Color(188, 31, 31), LinearGradientModeVertical);
-    repeat_brush_ = new LinearGradientBrush(rect0_, Color(255, 203, 127), Color(214, 112, 0), LinearGradientModeVertical);
+    play_brush_ = new SolidBrush(Color(188, 31, 31));//LinearGradientBrush(rect0_, Color(230, 77, 77), Color(188, 31, 31), LinearGradientModeVertical);
+    repeat_brush_ = new SolidBrush(Color(214, 112, 0));//LinearGradientBrush(rect0_, Color(255, 203, 127), Color(214, 112, 0), LinearGradientModeVertical);
     background_brush_ = new SolidBrush(Color(68, 68, 68));
     section_brush_ = new SolidBrush(Color(24, 141, 211));
     
@@ -78,7 +78,7 @@ void ProgressBar::DrawRepeat(const PaintInfo* pi)
 }
 void ProgressBar::DrawBackground(Graphics& gfx, const Sections& sections)
 {
-    LinearGradientBrush br(rect2_, Color(10, 10, 10), Color(66, 66, 66), LinearGradientModeVertical);
+    SolidBrush br(Color(66, 66,66));
     gfx.FillRectangle(&br, rect2_);
 
     SolidBrush p(Color(25, 25, 25));

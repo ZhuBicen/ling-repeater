@@ -3,8 +3,10 @@
 
 #include "Precompiled.hpp"
 #include "MainWindow.hpp"
+#include "MainWindow.hpp"
 #include "MessageQueue.hpp"
 #include "Utils.hpp"
+#include "Fsm.hpp"
 
 #pragma comment(lib, "gdiplus.lib")
 
@@ -40,7 +42,12 @@ int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
     MessageQueue message_queue;
     LingJson json;
     LOG(logINFO) << json;
-    MainWindow wndMain(message_queue);
+    CMainDlg wndMain(message_queue);
+	if(wndMain.Create(NULL) == NULL)
+	{
+		ATLTRACE(_T("Main dialog creation failed!\n"));
+		return 0;
+	}
 
     wndMain.ShowWindow(nCmdShow);
 

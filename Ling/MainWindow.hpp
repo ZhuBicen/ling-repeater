@@ -1,45 +1,58 @@
-#ifndef REPEATER_WIN
-#define REPEATER_WIN
-#include "Bar.hpp"
-#include "CoolButton.hpp"
-#include "UiInterface.hpp"
-#include "Fsm.hpp"
-#include "Ui.hpp"
-#include "FileNameStatic.hpp"
-#include "MessageQueue.hpp"
-#include "Utils.hpp"
+// MainDlg.h : interface of the CMainDlg class
+//
+/////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+#include "Ui.hpp"
+#include "Bar.hpp"
+#include "MessageQueue.hpp"
+#include "FileNameStatic.hpp"
+#include "CoolButton.hpp"
+#include "resource.h"
 ///////////////////////////////////////////
 //How to define this min & max value, maybe conflict with the ID in resource.h?
 #define ID_FIRST_MEDIA_FILE 3000
 #define ID_LAST_MEDIA_FILE  4000
 ///////////////////////////////////////////--------->>>>>>>>>>>>>>
 
-typedef CWinTraits<WS_POPUP | WS_SYSMENU /*| WS_CAPTION   | WS_BORDER*/|WS_VISIBLE, WS_EX_TOPMOST /*| WS_EX_TOOLWINDOW*/> RepeaterWinTraits;
-class MainWindow: 
-    public CWindowImpl< MainWindow, CWindow, RepeaterWinTraits>,
-    //public CMessageFilter,
-    public Ui< MainWindow>
+class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
+		public CMessageFilter, public CIdleHandler,
+        public Ui< CMainDlg>
+
 {
 public:
-    DECLARE_WND_CLASS(_T("REPEATER_WIN"))
-    /*virtual BOOL PreTranslateMessage(MSG* pMsg)
-	{
-        LOG(logINFO) << std::hex << __FUNCTION__ << " received msg " << pMsg->message << std::dec ;
-		return FALSE;
-	}*/
+    CMainDlg(MessageQueue& mq): TASKBAR_CREATE_MESSAGE(RegisterWindowMessage ( _T("TaskbarButtonCreated") )),
+        mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
+        close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER"),
+        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER"){
+    }
+	enum { IDD = IDD_MAINDLG };
 
-    BEGIN_MSG_MAP_EX(RepeaterWindow)
-        MSG_WM_CREATE(OnCreate)
-        MSG_WM_DESTROY(OnDestroy)
+	virtual BOOL PreTranslateMessage(MSG* pMsg)
+	{
+		return CWindow::IsDialogMessage(pMsg);
+	}
+
+	virtual BOOL OnIdle()
+	{
+		return FALSE;
+	}
+
+	BEGIN_UPDATE_UI_MAP(CMainDlg)
+	END_UPDATE_UI_MAP()
+
+	BEGIN_MSG_MAP(CMainDlg)
+		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
         MSG_WM_NCHITTEST(OnNcHitTest)
-        MSG_WM_PAINT(OnPaint)
+		COMMAND_ID_HANDLER(IDOK, OnOK)
+
         MSG_WM_DROPFILES(OnDropFiles)
         MSG_WM_HOTKEY(OnHotKey)
         MSG_WM_TIMER(OnTimer)
+        MSG_WM_PAINT(OnPaint)
 
         MSG_WM_CONTEXTMENU(OnContextMenu)
-        COMMAND_ID_HANDLER(IDB_CLOSE, OnCloseButtonClicked)
         COMMAND_ID_HANDLER(IDM_PAUSE_RESUME, OnPauseResumeButtonClicked)
         COMMAND_ID_HANDLER(IDM_ABOUT, OnAbout)
         COMMAND_RANGE_HANDLER_EX(ID_FIRST_MEDIA_FILE, ID_LAST_MEDIA_FILE, OnOpenMediaFile)
@@ -57,12 +70,9 @@ public:
         //
         MESSAGE_HANDLER(TASKBAR_CREATE_MESSAGE, OnTaskbarBtnCreated)
         REFLECT_NOTIFICATIONS()
-    END_MSG_MAP()
 
 
-    //TODO: remove this friend
-    friend class ProgressBar;
-    MainWindow(MessageQueue& mq);
+	END_MSG_MAP()
 
     void OnHotKey(int nHotKeyID, UINT uModifiers, UINT uVirtKey);    
     void OnTimer(UINT_PTR nIDEvent);
@@ -91,34 +101,32 @@ public:
     LRESULT OnDrawBar     (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnTaskbarBtnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-    void DrawFileName(const std::wstring& file_name);
-    void StartTimer(){SetTimer(timerId_, 500); }
-    void StopTimer(){KillTimer(timerId_);}
 
+//  Handler prototypes (uncomment arguments if needed):
+//	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+//	LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+//	LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 
+	LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	void CloseDialog(int nVal);
 
+    //TODO: remove this friend
+    friend class ProgressBar;
 private:
-    ProgressBar bar_;
-    CRect rect_, bar_rect_, close_rect_, icon_rect_, title_rect_, file_name_rect_;
-    ATOM hotkey_;
-
-    MessageQueue& mq_;
-    LingJson json_;
-
-    static const int timerId_ = 199;
-    CoolButton close_button_;
     std::map<int, std::wstring> media_files_;
+    CRect title_rect_, icon_rect_;
     const char* p_repo_;
-    FileNameStatic file_name_static_;
-
-    CoolButton a_button_, b_button_;
-    CRect a_rect_, b_rect_;
-
-    CoolButton pin_button_;
-    CRect pin_rect_;
-
+    static const int timerId_ = 199;
+    MessageQueue& mq_;
+    ProgressBar bar_;
+    ATOM hotkey_;
     CComPtr<ITaskbarList3> taskbar_list_;
-    static const UINT TASKBAR_CREATE_MESSAGE;
-
+    const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
+    FileNameStatic file_name_static_;
+    CoolButton play_button_, close_button_;
 };
-#endif
+//const UINT CMainDlg::TASKBAR_CREATE_MESSAGE = RegisterWindowMessage ( _T("TaskbarButtonCreated") );

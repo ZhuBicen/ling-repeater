@@ -7,7 +7,7 @@
 class CoolButton : public CWindowImpl<CoolButton, CButton>, public COwnerDraw<CoolButton>
 {
     bool _bMouseTrack;
-    Rect rect_;
+    Rect rect_, rect2_;//为什么RC里描述为宽高相等，GetClient获得的确不相等
     CGdiPlusBitmapResource normal_image_, hover_image_;
 public:
     BEGIN_MSG_MAP_EX(CoolButton)
