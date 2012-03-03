@@ -25,11 +25,10 @@ class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 public:
     CMainDlg(MessageQueue& mq):
       mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
-      bg_color_(Theme::Black), 
-        close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER", bg_color_),
-        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER", bg_color_),
-        theme_button_(L"THEME_NORMAL", L"THEME_NORMAL", bg_color_),
-		file_name_static_(bg_color_){
+      bg_color_(Theme::Get()->BgColor()), 
+        close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER"),
+        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER"),
+        theme_button_(L"THEME_NORMAL", L"THEME_NORMAL"){
     }
 	enum { IDD = IDD_MAINDLG };
 

@@ -1,12 +1,14 @@
 #pragma once
 #include "PreCompiled.hpp"
+#include "Theme.hpp"
 
-class FileNameStatic: public CWindowImpl<FileNameStatic, CStatic>
+class FileNameStatic: public CWindowImpl<FileNameStatic, CStatic>, public Theme::Redrawer
 {
 public:
     BEGIN_MSG_MAP_EX(FileNameStatic)
         MSG_WM_PAINT(OnPaint)
     END_MSG_MAP()
+
     void OnPaint(CDCHandle dc)
     {
         PAINTSTRUCT ps;
@@ -29,7 +31,13 @@ public:
 
         EndPaint(&ps);
     }
-    FileNameStatic(Color bgcolor):bg_color_(bgcolor){}
+    FileNameStatic(){
+        bg_color_ = Theme::Get()->BgColor();
+    }
+    void Redraw(){
+        bg_color_ = Theme::Get()->BgColor();
+        InvalidateRect(NULL);
+    }
     void SetFileName(const std::wstring& file_name){
         file_name_ = file_name;
         CRect rect;

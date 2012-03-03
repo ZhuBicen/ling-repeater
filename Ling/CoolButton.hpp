@@ -3,8 +3,10 @@
 #include "Precompiled.hpp"
 #include "CGdiPlusBitmap.h"
 #include "log.hpp"
+#include "Theme.hpp"
 
-class CoolButton : public CWindowImpl<CoolButton, CButton>, public COwnerDraw<CoolButton>
+class CoolButton : public CWindowImpl<CoolButton, CButton>, public COwnerDraw<CoolButton>,
+    public Theme::Redrawer
 {
     bool _bMouseTrack;
     Rect rect_, rect2_;//为什么RC里描述为宽高相等，GetClient获得的确不相等
@@ -18,7 +20,7 @@ public:
         //MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBackground)
         DEFAULT_REFLECTION_HANDLER()
     END_MSG_MAP()
-    CoolButton(std::wstring normal, std::wstring hover, Color bgcolor);
+    CoolButton(std::wstring normal, std::wstring hover);
     ~CoolButton(void);
     void DrawItem(LPDRAWITEMSTRUCT lpdis);
     LONG OnMouseHover(UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandled);
@@ -50,6 +52,10 @@ public:
     //    //InvalidateRect(NULL, FALSE) ;
     //    return 1;   // no background painting needed
     //}
+    void Redraw(){
+        bg_color_ = Theme::Get()->BgColor();
+        InvalidateRect(NULL);
+    }
     void SwapNormalHoverImage()
     {
         SwapGdiPlusBitmap(normal_image_, hover_image_);

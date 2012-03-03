@@ -1,13 +1,14 @@
 #include "Precompiled.hpp"
 #include "CoolButton.hpp"
 
-CoolButton::CoolButton(std::wstring normal, std::wstring hover, Color bgcolor):
-bg_color_(bgcolor), _bMouseTrack(true)
+CoolButton::CoolButton(std::wstring normal, std::wstring hover):
+ _bMouseTrack(true)
 {
     //within debug mode, this var will be initilized as true, but not release mode
     //so, assign a true explictly.
      normal_image_.Load(normal.c_str());
      hover_image_.Load(hover.c_str());
+     bg_color_ = Theme::Get()->BgColor();
 }
 
 CoolButton::~CoolButton(void)

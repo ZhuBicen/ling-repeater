@@ -7,6 +7,7 @@
 #include "MessageQueue.hpp"
 #include "Utils.hpp"
 #include "Fsm.hpp"
+#include "Theme.hpp"
 
 #pragma comment(lib, "gdiplus.lib")
 
@@ -41,6 +42,7 @@ int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
     //Create the Message Queue
     MessageQueue message_queue;
     LingJson json;
+    Theme::Init();
     LOG(logINFO) << json;
     CMainDlg wndMain(message_queue);
 	if(wndMain.Create(NULL) == NULL)

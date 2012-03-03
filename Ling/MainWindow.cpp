@@ -75,6 +75,10 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
     redrawers_.push_back(this);
     redrawers_.push_back(&bar_);
+    redrawers_.push_back(&file_name_static_);
+    redrawers_.push_back(&close_button_);
+    redrawers_.push_back(&theme_button_);
+    redrawers_.push_back(&play_button_);
     return TRUE;
 }
 
@@ -332,7 +336,7 @@ UINT CMainDlg::OnNcHitTest(CPoint point)
 
 LRESULT CMainDlg::OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled)
 {
-    Theme::Set(1);
+    Theme::Change();
     for(std::vector<Theme::Redrawer*>::iterator ci = redrawers_.begin();
         ci != redrawers_.end(); ci++){
             (*ci)->Redraw();
