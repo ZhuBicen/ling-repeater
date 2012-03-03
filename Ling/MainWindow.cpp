@@ -256,7 +256,7 @@ void CMainDlg::OnPaint(CDCHandle dc)
     RECT dlgRect ;
     GetClientRect(&dlgRect);
     Gdiplus::Rect rect(dlgRect.left, dlgRect.top, dlgRect.right, dlgRect.bottom);
-    SolidBrush br(Color(42, 43, 44));
+    SolidBrush br(bg_color_);
     Gdiplus::Status st = gfx.FillRectangle(&br, rect);
 
 	CGdiPlusBitmapResource logo(L"LING_LOGO");

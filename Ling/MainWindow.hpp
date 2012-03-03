@@ -24,14 +24,14 @@ public:
     CMainDlg(MessageQueue& mq):
         mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
         close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER"),
-        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER"){
+        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER"),
+		bg_color_(Color(32,33, 34)), file_name_static_(bg_color_){
     }
 	enum { IDD = IDD_MAINDLG };
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
-		LOG(logINFO) << "MessageId = " << pMsg->message;
-		return CWindow::IsDialogMessage(pMsg);
+        return CWindow::IsDialogMessage(pMsg);
 	}
 
 	virtual BOOL OnIdle()
@@ -123,6 +123,7 @@ private:
     ATOM hotkey_;
     CComPtr<ITaskbarList3> taskbar_list_;
     static const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
-    FileNameStatic file_name_static_;
     CoolButton play_button_, close_button_;
+    Color bg_color_;
+    FileNameStatic file_name_static_;
 };

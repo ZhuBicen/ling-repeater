@@ -13,6 +13,13 @@ public:
         HDC hdc = BeginPaint(&ps);
         Graphics gfx(hdc);
 
+        RECT dlgRect ;
+        GetClientRect(&dlgRect);
+        Gdiplus::Rect rect(dlgRect.left, dlgRect.top, dlgRect.right, dlgRect.bottom);
+        SolidBrush br(bg_color_);
+        Gdiplus::Status st = gfx.FillRectangle(&br, rect);
+
+
         FontFamily fontFamily(L"ËÎÌו");
         Font font(&fontFamily, 12, FontStyleRegular, UnitPixel);
         SolidBrush solidBrush(Color(255, 255, 255));
@@ -22,6 +29,7 @@ public:
 
         EndPaint(&ps);
     }
+    FileNameStatic(Color bgcolor):bg_color_(bgcolor){}
     void SetFileName(const std::wstring& file_name){
         file_name_ = file_name;
         CRect rect;
@@ -31,5 +39,6 @@ public:
     }
 private:
     std::wstring file_name_;
+    Color bg_color_;
 
 };
