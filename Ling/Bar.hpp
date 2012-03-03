@@ -61,7 +61,7 @@ private:
 private:
     CMainDlg& main_window_;
     Rect rect0_, rect1_, rect2_;
-
+    
     //UI style related
     /*LinearGradientBrush*/SolidBrush* play_brush_, *repeat_brush_;
     SolidBrush* background_brush_, *section_brush_;;

@@ -36,7 +36,6 @@ int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
     rc.Inflate(-1, -1);
     rect0_ = rc;
     //从内到外，分别为rect0_, rect1_, rect2_
-
     
     return TRUE;
 
@@ -98,11 +97,11 @@ void ProgressBar::DrawRepeat(const PaintInfo* pi)
 }
 void ProgressBar::DrawBackground(Graphics& gfx, const Sections& sections)
 {
-    SolidBrush br(Color(66, 66,66));
-    gfx.FillRectangle(&br, rect2_);
-
-    SolidBrush p(Color(25, 25, 25));
-    gfx.FillRectangle(&p, rect1_);
+    SolidBrush br2(Theme::Get()->BarFrame2Color());
+    gfx.FillRectangle(&br2, rect2_);
+    
+    SolidBrush br1(Theme::Get()->BarFrame1Color());
+    gfx.FillRectangle(&br1, rect1_);    
 
     gfx.FillRectangle(background_brush_, rect0_);
     for(Sections::const_iterator ci = sections.begin(); ci != sections.end(); ++ci){
@@ -187,7 +186,7 @@ void ProgressBar::DrawLine(Graphics& gfx, Brush* brush, long from, long to)
     int from_point = CalculateX( from, length_, rect0_.Width );
     int to_point   = CalculateX( to, length_, rect0_.Width );
     rect.X += from_point;
-    rect.Y = rect2_.Y;
+    rect.Y = rect1_.Y;
     rect.Height = 2;
     rect.Width =  to_point - from_point;
     gfx.FillRectangle(brush, rect);
