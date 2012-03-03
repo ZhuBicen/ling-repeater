@@ -42,9 +42,14 @@ LRESULT  ProgressBar::OnDrawBar(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
             main_window_.taskbar_list_->SetProgressValue( main_window_, pui->current_pos_, length_ );
         }
         if( pui->color_ == 0)
-            UpdateNormalPlayingPosition(pui->previous_pos_, pui->current_pos_);
-        else
-            UpdateRepeatedPlayingPosition(pui->previous_pos_, pui->current_pos_);
+            this->UpdateNormalPlayingPosition(pui->previous_pos_, pui->current_pos_);
+        else if(pui->color_ == 1){
+            this->UpdateRepeatedPlayingPosition(pui->previous_pos_, pui->current_pos_);
+        }else if(pui->color_ == 2){//draw one section
+            this->DrawSection(pui->section_);
+        }else{
+            LOG(logERROR) << "Can't recogonize the color_ index : " << pui->color_;
+        }
         delete pui;
     }
 
@@ -184,4 +189,12 @@ long ProgressBar::GetPos(CPoint point)
          return -1;
     }
     return static_cast<long>(((double) (point.x - 2 )/rect0_.Width) * length_);
+}
+
+void ProgressBar::DrawSection(const Section& sec)
+{
+    HDC hdc = GetDC();
+    Graphics gfx(hdc);
+    this->DrawLine(gfx, section_brush_, sec.begin_, sec.end_);
+    ReleaseDC(hdc);
 }

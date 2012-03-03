@@ -43,6 +43,7 @@ public:
 
     void DrawNormal(const PaintInfo* pi);
     void DrawRepeat(const PaintInfo* pi);
+    void DrawSection(const Section& sec);
     long GetPos(CPoint p);
 private:
     void DrawBackground(Graphics& gfx, const Sections& sections);

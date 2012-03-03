@@ -19,6 +19,7 @@ struct PaintUpdateInfo
     long length_;
     long previous_pos_;
     long current_pos_;
+    Section section_;
 };
 struct ContextMenuInfo{
     bool mark_;

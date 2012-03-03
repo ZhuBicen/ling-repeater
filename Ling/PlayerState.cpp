@@ -200,6 +200,12 @@ fsm::result RepeatedPlayingState::react( const SaveSectionEvent& evt)
 {
     LOG(logINFO)<< __FUNCTION__ << "SaveSectionEvent";
     context< HandlingFileState >().SaveCurrentSection();
+    PaintUpdateInfo* pui = new PaintUpdateInfo();
+    pui->color_ = 2;//magic number
+    pui->section_.begin_  =  context< HandlingFileState >().GetStartPos();
+    pui->section_.end_    =  context< HandlingFileState >().GetEndPos();
+    context< PlayerFsm >().ui_->UpdateBar(pui);
+    
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );        
 }
 fsm::result RepeatedPlayingState::react( const RequestPaintInfoEvent& evt)
