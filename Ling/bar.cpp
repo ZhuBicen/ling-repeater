@@ -5,38 +5,46 @@
 #include "Theme.hpp"
 
 ProgressBar::ProgressBar(CMainDlg& main_window)
-    :main_window_(main_window), length_(0)//,
+:main_window_(main_window), length_(0), play_brush_(NULL),
+repeat_brush_(NULL), background_brush_(NULL), section_brush_(NULL)
 {
-    CreateBrushes();
 }
 
-void ProgressBar::CreateBrushes()
+void ProgressBar::LoadTheme()
 {
-    play_brush_ = new SolidBrush(Theme::Get()->PlayColor());
-    repeat_brush_ = new SolidBrush(Theme::Get()->RepeateColor());
-    background_brush_ = new SolidBrush(Theme::Get()->BarBgColor());
-    section_brush_ = new SolidBrush(Theme::Get()->SectionColor());
-}
-
-void ProgressBar::DestroyBrushes()
-{
-    delete play_brush_;
-    delete repeat_brush_;
-    delete background_brush_;
-    delete section_brush_;
-}
-int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
+    frame_ = Theme::Get()->Frame();
     RECT rect;
     GetClientRect(&rect);
     Rect rc(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-    rect2_ = rc;
-    rc.Inflate(-1, -1);
-    rect1_ = rc;
-    rc.Inflate(-1, -1);
-    rect0_ = rc;
     //从内到外，分别为rect0_, rect1_, rect2_
-    
+    rect2_ = rc;
+    rc.Inflate(-frame_, -frame_);
+    rect1_ = rc;
+    rc.Inflate(-frame_, -frame_);
+    rect0_ = rc;
+    if (play_brush_ != NULL){
+        delete play_brush_;
+    }
+    play_brush_ = new SolidBrush(Theme::Get()->PlayColor());
+    if (repeat_brush_ != NULL){
+        delete repeat_brush_;
+    }
+    repeat_brush_ = new SolidBrush(Theme::Get()->RepeateColor());
+
+    if (background_brush_ != NULL){
+        delete background_brush_;
+    }
+    background_brush_ = new SolidBrush(Theme::Get()->BarBgColor());
+
+    if (section_brush_ != NULL){
+        delete section_brush_;
+    }
+    section_brush_ = new SolidBrush(Theme::Get()->SectionColor());
+}
+
+int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+    this->LoadTheme();
     return TRUE;
 
 }
@@ -138,7 +146,6 @@ void ProgressBar::OnPaint(CDCHandle dc)
 }
 LRESULT ProgressBar::OnDestroy(){
     PostQuitMessage(0);//?????????
-    DestroyBrushes();
     return 0;
 } 
 
@@ -187,7 +194,7 @@ void ProgressBar::DrawLine(Graphics& gfx, Brush* brush, long from, long to)
     int to_point   = CalculateX( to, length_, rect0_.Width );
     rect.X += from_point;
     rect.Y = rect1_.Y;
-    rect.Height = 2;
+    rect.Height = 2 * frame_;
     rect.Width =  to_point - from_point;
     gfx.FillRectangle(brush, rect);
 }
@@ -198,7 +205,7 @@ long ProgressBar::GetPos(CPoint point)
          LOG(logERROR) << __FUNCTION__ << " Illegal arguments";
          return -1;
     }
-    return static_cast<long>(((double) (point.x - 2 )/rect0_.Width) * length_);
+    return static_cast<long>(((double) (point.x - 2 * frame_ )/rect0_.Width) * length_);
 }
 
 void ProgressBar::DrawSection(const Section& sec)
@@ -210,7 +217,6 @@ void ProgressBar::DrawSection(const Section& sec)
 }
 void ProgressBar::Redraw()
 {
-    DestroyBrushes();
-    CreateBrushes();
+    LoadTheme();
     main_window_.mq_.PutMessage(boost::shared_ptr<Message>(new RequestPaintInfoEvent()));
 }

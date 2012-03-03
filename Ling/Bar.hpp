@@ -56,11 +56,11 @@ private:
     void DrawRectangle(Graphics& gfx, Brush* brush, long from, long to);
     void DrawLine(Graphics& gfx, Brush* brush, long from, long to);
 
-    void CreateBrushes();
-    void DestroyBrushes();
+    void LoadTheme();
 private:
     CMainDlg& main_window_;
     Rect rect0_, rect1_, rect2_;
+    INT frame_;
     
     //UI style related
     /*LinearGradientBrush*/SolidBrush* play_brush_, *repeat_brush_;

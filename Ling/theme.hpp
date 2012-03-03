@@ -20,6 +20,7 @@ public:
     virtual Color BarBgColor() = 0;
     virtual Color BarFrame1Color() = 0;
     virtual Color BarFrame2Color() = 0;
+    virtual int Frame() = 0;
 };
 
 class Native: public ITheme{
@@ -31,6 +32,7 @@ public:
     Color BarBgColor() {return Gray;}
     Color BarFrame1Color() { return Color(25, 25, 25);}
     Color BarFrame2Color(){ return Color(66, 66, 66);}
+    int Frame(){ return 1;}
 };
 
 class QQ:public ITheme{
@@ -42,6 +44,7 @@ public:
     Color BarBgColor(){return Gray;}
     Color BarFrame1Color() { return Color(25, 25, 25);}
     Color BarFrame2Color(){ return Color(66, 66, 66);}
+    int Frame(){ return 2;}
 };
 
 class DeepBlue:public ITheme{
@@ -53,6 +56,7 @@ public:
     Color BarBgColor() {return Color(72, 96, 118);}
     Color BarFrame1Color() { return Color(25, 25, 25);}
     Color BarFrame2Color(){ return Color(66, 66, 66);}
+    int Frame(){ return 1;}
 };
 
 
