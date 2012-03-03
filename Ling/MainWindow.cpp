@@ -1,7 +1,7 @@
 #include "Precompiled.hpp"
 #include "MainWindow.hpp"
 #include "CGdiPlusBitmap.h"
-#define MainWindow CMainDlg
+const UINT CMainDlg::TASKBAR_CREATE_MESSAGE = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
 LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
     // center the dialog on the screen

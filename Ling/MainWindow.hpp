@@ -21,7 +21,7 @@ class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 
 {
 public:
-    CMainDlg(MessageQueue& mq): TASKBAR_CREATE_MESSAGE(RegisterWindowMessage ( _T("TaskbarButtonCreated") )),
+    CMainDlg(MessageQueue& mq):
         mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
         close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER"),
         play_button_(L"PLAY_NORMAL", L"PLAY_HOVER"){
@@ -30,6 +30,7 @@ public:
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg)
 	{
+		LOG(logINFO) << "MessageId = " << pMsg->message;
 		return CWindow::IsDialogMessage(pMsg);
 	}
 
@@ -66,12 +67,8 @@ public:
         MESSAGE_HANDLER(WM_SETREPO,      OnSetRepo)
         MESSAGE_HANDLER(WM_DRAWBAR,      OnDrawBar)
         MESSAGE_HANDLER(WM_CONTEXTMENUINFO, OnShowContextMenuRes)
-
-        //
         MESSAGE_HANDLER(TASKBAR_CREATE_MESSAGE, OnTaskbarBtnCreated)
         REFLECT_NOTIFICATIONS()
-
-
 	END_MSG_MAP()
 
     void OnHotKey(int nHotKeyID, UINT uModifiers, UINT uVirtKey);    
@@ -125,8 +122,7 @@ private:
     ProgressBar bar_;
     ATOM hotkey_;
     CComPtr<ITaskbarList3> taskbar_list_;
-    const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
+    static const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
     FileNameStatic file_name_static_;
     CoolButton play_button_, close_button_;
 };
-//const UINT CMainDlg::TASKBAR_CREATE_MESSAGE = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
