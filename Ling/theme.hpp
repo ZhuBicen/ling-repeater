@@ -49,14 +49,14 @@ public:
 
 class DeepBlue:public ITheme{
 public:
-    Color PlayColor() {return Blue;}
+    Color PlayColor() {return Pink;}
     Color RepeateColor() {return White;}
     Color SectionColor() { return Pink;}
-    Color BgColor() { return Color(72, 101, 154);}
-    Color BarBgColor() {return Color(72, 96, 118);}
-    Color BarFrame1Color() { return Color(25, 25, 25);}
-    Color BarFrame2Color(){ return Color(66, 66, 66);}
-    int Frame(){ return 1;}
+    Color BgColor() { return Blue;}
+    Color BarBgColor() {return White;}
+    Color BarFrame1Color() { return White;}
+    Color BarFrame2Color(){ return White;}
+    int Frame(){ return 2;}
 };
 
 

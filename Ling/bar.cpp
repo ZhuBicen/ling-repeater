@@ -194,7 +194,7 @@ void ProgressBar::DrawLine(Graphics& gfx, Brush* brush, long from, long to)
     int to_point   = CalculateX( to, length_, rect0_.Width );
     rect.X += from_point;
     rect.Y = rect1_.Y;
-    rect.Height = 2 * frame_;
+    rect.Height = frame_;
     rect.Width =  to_point - from_point;
     gfx.FillRectangle(brush, rect);
 }
