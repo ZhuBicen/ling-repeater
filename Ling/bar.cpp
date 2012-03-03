@@ -28,7 +28,7 @@ int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 }
 LRESULT  ProgressBar::OnDrawBar(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-    LOG(logINFO)<< __FUNCTION__ << std::hex << " (uMsg = 0x" << uMsg <<", wParam = 0x" << wParam << ", lParam = 0x" << lParam << ")" << std:: dec;
+    LOG(logDEBUG1)<< __FUNCTION__ << std::hex << " (uMsg = 0x" << uMsg <<", wParam = 0x" << wParam << ", lParam = 0x" << lParam << ")" << std:: dec;
     if( lParam == 0){//draw
         PaintInfo* pi = (PaintInfo*)wParam;
         if(pi->start_pos_ == INVALID_POS || pi->end_pos_ == INVALID_POS)
@@ -152,9 +152,9 @@ LRESULT ProgressBar::OnButtonDown( UINT WPARAM, CPoint point)
 
 void ProgressBar::DrawRectangle(Graphics& gfx, Brush* brush, long from, long to)
 {
-    assert(from <= length_ && from >= 0);
-    assert(to <= length_ && to >= 0);
-    LOG(logDEBUG1)<< __FUNCTION__ << "from = " << from << " to = " << to;
+    if (from > length_ || from < 0 || to > length_ || to < 0){
+        LOG(logERROR)<< __FUNCTION__ << "from = " << from << " to = " << to;
+    }
     Rect rect = rect0_;
     int from_point = CalculateX( from, length_, rect0_.Width );
     int to_point   = CalculateX( to, length_, rect0_.Width );

@@ -1,8 +1,8 @@
 #include "Precompiled.hpp"
 #include "CoolButton.hpp"
 
-CoolButton::CoolButton(std::wstring normal, std::wstring hover):
-_bMouseTrack(true)
+CoolButton::CoolButton(std::wstring normal, std::wstring hover, Color bgcolor):
+bg_color_(bgcolor), _bMouseTrack(true)
 {
     //within debug mode, this var will be initilized as true, but not release mode
     //so, assign a true explictly.
@@ -57,7 +57,7 @@ LONG CoolButton::OnMouseHover(UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandl
 
 void CoolButton::DrawBackground(Graphics& gfx)
 {
-    SolidBrush blackBrush(Color(42, 43, 44)/*Color(0, 0, 0)*/);
+    SolidBrush blackBrush(bg_color_);
     gfx.FillRectangle(&blackBrush, rect_);
 
 }

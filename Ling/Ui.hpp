@@ -86,7 +86,7 @@ private:
         if(::PostMessage(impl_->m_hWnd, msg_id, w, l)){
             LOG(logDEBUG1) << __FUNCTION__ << std::hex << " (hwnd = 0x" << impl_->m_hWnd << ", msg_id = 0x" << msg_id <<", w = 0x" << w << ", l = 0x" << l << ")" << std::dec;
         }else{
-            //LOG(logERROR) << __FUNCTION__ << "Failed to post message: " << std::hex << msg_id << std::dec;
+            LOG(logERROR) << __FUNCTION__ << "Failed to post message: " << std::hex << msg_id << std::dec;
         }
     }
     WinImpl* impl_;

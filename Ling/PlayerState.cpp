@@ -50,7 +50,7 @@ fsm::result NormalPlayingState::react( const UpdatePosEvent& evt){
     long pos = context< PlayerFsm >().player_.GetCurrentPos();
     context< HandlingFileState >().SetCurrentPos( pos );
         
-    LOG(logDEBUG) << __FUNCTION__ << evt << " pos = " << pos;
+    LOG(logDEBUG1) << __FUNCTION__ << evt << " pos = " << pos;
     //Update UI
     PaintUpdateInfo* pui = new PaintUpdateInfo();
     pui->color_ = 0;
@@ -98,6 +98,7 @@ fsm::result NormalPlayingState::react( const PlayFinishedEvent& evt){
     LOG(logINFO) << __FUNCTION__;
     PaintInfo* pi = new PaintInfo();
     pi->current_pos_ = 0;
+    pi->sections_ = context< HandlingFileState >().GetSections();    
     context< PlayerFsm >().ui_->DrawBar(pi);
     context< PlayerFsm >().player_.Seek(0);
     context< PlayerFsm >().player_.Play();
@@ -134,7 +135,7 @@ fsm::result RepeatedPlayingState::react( const UpdatePosEvent& evt){
     pui->current_pos_  =  context< HandlingFileState >().GetCurrentPos();
     pui->previous_pos_ =  context< HandlingFileState >().GetPreviousPos();
     context< PlayerFsm >().ui_->UpdateBar(pui);
-    LOG(logDEBUG) << __FUNCTION__ << evt << pos;
+    LOG(logDEBUG1) << __FUNCTION__ << evt << pos;
 
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );
 }

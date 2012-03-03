@@ -18,7 +18,7 @@ public:
         //MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBackground)
         DEFAULT_REFLECTION_HANDLER()
     END_MSG_MAP()
-    CoolButton(std::wstring normal, std::wstring hover);
+    CoolButton(std::wstring normal, std::wstring hover, Color bgcolor);
     ~CoolButton(void);
     void DrawItem(LPDRAWITEMSTRUCT lpdis);
     LONG OnMouseHover(UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandled);
@@ -57,5 +57,6 @@ public:
     }
 private:
     void DrawBackground(Graphics& gfx);
+    Color bg_color_;
 };
 #endif

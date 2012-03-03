@@ -23,9 +23,10 @@ class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 public:
     CMainDlg(MessageQueue& mq):
         mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
-        close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER"),
-        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER"),
-		bg_color_(Color(32,33, 34)), file_name_static_(bg_color_){
+        bg_color_(Color(32,33, 34)), 
+        close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER", bg_color_),
+        play_button_(L"PLAY_NORMAL", L"PLAY_HOVER", bg_color_),
+		file_name_static_(bg_color_){
     }
 	enum { IDD = IDD_MAINDLG };
 
@@ -114,6 +115,7 @@ public:
     //TODO: remove this friend
     friend class ProgressBar;
 private:
+    Color bg_color_;
     std::map<int, std::wstring> media_files_;
     CRect title_rect_, icon_rect_;
     const char* p_repo_;
@@ -124,6 +126,5 @@ private:
     CComPtr<ITaskbarList3> taskbar_list_;
     static const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
     CoolButton play_button_, close_button_;
-    Color bg_color_;
     FileNameStatic file_name_static_;
 };
