@@ -6,8 +6,25 @@
 
 ProgressBar::ProgressBar(CMainDlg& main_window)
     :main_window_(main_window), length_(0)//,
-{}
+{
+    CreateBrushes();
+}
 
+void ProgressBar::CreateBrushes()
+{
+    play_brush_ = new SolidBrush(Theme::Get()->PlayColor());
+    repeat_brush_ = new SolidBrush(Theme::Get()->RepeateColor());
+    background_brush_ = new SolidBrush(Theme::Get()->BarBgColor());
+    section_brush_ = new SolidBrush(Theme::Get()->SectionColor());
+}
+
+void ProgressBar::DestroyBrushes()
+{
+    delete play_brush_;
+    delete repeat_brush_;
+    delete background_brush_;
+    delete section_brush_;
+}
 int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     RECT rect;
@@ -19,10 +36,7 @@ int ProgressBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
     rc.Inflate(-1, -1);
     rect0_ = rc;
     //从内到外，分别为rect0_, rect1_, rect2_
-    play_brush_ = new SolidBrush(Theme::Blue);
-    repeat_brush_ = new SolidBrush(Theme::White);
-    background_brush_ = new SolidBrush(Theme::Gray);
-    section_brush_ = new SolidBrush(Theme::Pink);
+
     
     return TRUE;
 
@@ -124,12 +138,8 @@ void ProgressBar::OnPaint(CDCHandle dc)
 
 }
 LRESULT ProgressBar::OnDestroy(){
-    PostQuitMessage(0);
-    delete play_brush_;
-    delete repeat_brush_;
-    delete background_brush_;
-    delete section_brush_;
-    
+    PostQuitMessage(0);//?????????
+    DestroyBrushes();
     return 0;
 } 
 
@@ -198,4 +208,10 @@ void ProgressBar::DrawSection(const Section& sec)
     Graphics gfx(hdc);
     this->DrawLine(gfx, section_brush_, sec.begin_, sec.end_);
     ReleaseDC(hdc);
+}
+void ProgressBar::Redraw()
+{
+    DestroyBrushes();
+    CreateBrushes();
+    main_window_.mq_.PutMessage(boost::shared_ptr<Message>(new RequestPaintInfoEvent()));
 }

@@ -5,9 +5,12 @@
 #include "Player.hpp"
 #include "Utils.hpp"
 #include "Ui.hpp"
+#include "Theme.hpp"
+
 class CMainDlg;
 
-class ProgressBar:public CWindowImpl<ProgressBar, CWindow, CControlWinTraits>
+class ProgressBar:public CWindowImpl<ProgressBar, CWindow, CControlWinTraits>,
+    public Theme::Redrawer
 {
 public:
     DECLARE_WND_CLASS(_T("REPEATER_WIN"))
@@ -45,10 +48,16 @@ public:
     void DrawRepeat(const PaintInfo* pi);
     void DrawSection(const Section& sec);
     long GetPos(CPoint p);
+
+    //implement redrawer
+    void Redraw();
 private:
     void DrawBackground(Graphics& gfx, const Sections& sections);
     void DrawRectangle(Graphics& gfx, Brush* brush, long from, long to);
     void DrawLine(Graphics& gfx, Brush* brush, long from, long to);
+
+    void CreateBrushes();
+    void DestroyBrushes();
 private:
     CMainDlg& main_window_;
     Rect rect0_, rect1_, rect2_;

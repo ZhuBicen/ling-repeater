@@ -18,7 +18,8 @@
 
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 		public CMessageFilter, public CIdleHandler,
-        public Ui< CMainDlg>
+        public Ui< CMainDlg>,
+        public Theme::Redrawer
 
 {
 public:
@@ -27,6 +28,7 @@ public:
       bg_color_(Theme::Black), 
         close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER", bg_color_),
         play_button_(L"PLAY_NORMAL", L"PLAY_HOVER", bg_color_),
+        theme_button_(L"THEME_NORMAL", L"THEME_NORMAL", bg_color_),
 		file_name_static_(bg_color_){
     }
 	enum { IDD = IDD_MAINDLG };
@@ -61,6 +63,7 @@ public:
         COMMAND_RANGE_HANDLER_EX(ID_FIRST_MEDIA_FILE, ID_LAST_MEDIA_FILE, OnOpenMediaFile)
         COMMAND_ID_HANDLER(IDB_PIN, OnPinButtonClicked)
         COMMAND_ID_HANDLER(IDB_MARK, OnMarkButtonClicked)
+        COMMAND_ID_HANDLER(IDC_THEME, OnChangeTheme)
         //自定义消息
         MESSAGE_HANDLER(WM_STARTTIMER,   OnStartTimer)
         MESSAGE_HANDLER(WM_STOPTIMER,    OnStopTImer)
@@ -100,6 +103,7 @@ public:
     LRESULT OnDrawBar     (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnTaskbarBtnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+    LRESULT OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled);
 
 //  Handler prototypes (uncomment arguments if needed):
 //	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -115,6 +119,9 @@ public:
 
     //TODO: remove this friend
     friend class ProgressBar;
+
+    //implement redrawer
+    void Redraw();
 private:
     Color bg_color_;
     std::map<int, std::wstring> media_files_;
@@ -126,6 +133,8 @@ private:
     ATOM hotkey_;
     CComPtr<ITaskbarList3> taskbar_list_;
     static const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
-    CoolButton play_button_, close_button_;
+    CoolButton play_button_, close_button_, theme_button_;
     FileNameStatic file_name_static_;
+
+    std::vector<Theme::Redrawer*> redrawers_;
 };

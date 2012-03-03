@@ -71,7 +71,10 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
     file_name_static_.SubclassWindow(GetDlgItem(IDC_FILENAME));
     close_button_.SubclassWindow(GetDlgItem(IDOK));
     play_button_.SubclassWindow(GetDlgItem(ID_PLAY));
+    theme_button_.SubclassWindow(GetDlgItem(IDC_THEME));
 
+    redrawers_.push_back(this);
+    redrawers_.push_back(&bar_);
     return TRUE;
 }
 
@@ -273,6 +276,12 @@ void CMainDlg::OnPaint(CDCHandle dc)
     //Gdiplus::Status st2 = gfx.FillRectangle(&br2,rc2); 
     EndPaint(&ps);
 }
+
+void CMainDlg::Redraw()
+{
+    bg_color_ = Theme::Get()->BgColor();
+    InvalidateRect(NULL);
+}
 LRESULT CMainDlg::OnMarkButtonClicked( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled )
 {
     LOG(logINFO)<< __FUNCTION__ ;
@@ -319,4 +328,14 @@ UINT CMainDlg::OnNcHitTest(CPoint point)
     else{
         return HTCLIENT;
     }
+}
+
+LRESULT CMainDlg::OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled)
+{
+    Theme::Set(1);
+    for(std::vector<Theme::Redrawer*>::iterator ci = redrawers_.begin();
+        ci != redrawers_.end(); ci++){
+            (*ci)->Redraw();
+    }
+    return TRUE;
 }

@@ -46,6 +46,10 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 PLAY_NORMAL        RCDATA         ".\\res\\play_normal.png"
 
 
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+THEME_NORMAL       RCDATA         ".\\res\\theme_normal.png"
+
+
 
 //
 // Menu resources
@@ -95,6 +99,7 @@ FONT 8, "Ms Shell Dlg"
     LTEXT           "∑Á”Ô", IDC_FILENAME, 19, 3, 263, 8, SS_LEFT
     CONTROL         "OK", ID_PLAY, WC_BUTTON, WS_TABSTOP | WS_TABSTOP | BS_OWNERDRAW, 319, 0, 14, 14
     CONTROL         "", IDC_PROGRESSBAR, PROGRESS_CLASS, 0, 0, 15, 351, 11
+    CONTROL         "Button1", IDC_THEME, WC_BUTTON, WS_TABSTOP | WS_TABSTOP | BS_OWNERDRAW, 304, 0, 14, 14
 }
 
 

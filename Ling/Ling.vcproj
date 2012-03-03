@@ -248,6 +248,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Theme.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Ui.cpp"
 				>
 			</File>
