@@ -317,6 +317,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\theme.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Ui.hpp"
 				>
 			</File>

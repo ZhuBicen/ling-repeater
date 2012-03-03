@@ -9,6 +9,7 @@
 #include "FileNameStatic.hpp"
 #include "CoolButton.hpp"
 #include "resource.h"
+#include "Theme.hpp"
 ///////////////////////////////////////////
 //How to define this min & max value, maybe conflict with the ID in resource.h?
 #define ID_FIRST_MEDIA_FILE 3000
@@ -22,8 +23,8 @@ class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 {
 public:
     CMainDlg(MessageQueue& mq):
-        mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
-        bg_color_(Color(32,33, 34)), 
+      mq_(mq), bar_(*this), icon_rect_(1, 1, 22, 22), 
+      bg_color_(Theme::Black), 
         close_button_(L"CLOSE_NORMAL", L"CLOSE_HOVER", bg_color_),
         play_button_(L"PLAY_NORMAL", L"PLAY_HOVER", bg_color_),
 		file_name_static_(bg_color_){
