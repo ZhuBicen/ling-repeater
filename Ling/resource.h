@@ -6,6 +6,7 @@
 #define IDD_ABOUTBOX                            136
 #define IDD_MAINDLG                             138
 #define ID_PLAY                                 1000
+#define IDC_TIME                                1001
 #define IDC_THEME                               1002
 #define IDM_ABOUT                               40000
 #define IDM___2                                 40001
