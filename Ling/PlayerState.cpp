@@ -36,6 +36,7 @@ NormalPlayingState::NormalPlayingState( my_context ctx ) : my_base( ctx ){
     PaintInfo* pi = new PaintInfo();
     pi->current_pos_ = cur_pos;
     pi->sections_ = context< HandlingFileState >().GetSections();
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();
     context< PlayerFsm >().ui_->DrawBar(pi);
     context< PlayerFsm >().player_.Seek(cur_pos);
     context< PlayerFsm >().player_.Play();
@@ -86,7 +87,9 @@ fsm::result NormalPlayingState::react( const SetPosEvent& evt){
     LOG(logINFO) << __FUNCTION__;
     PaintInfo* pi = new PaintInfo();
     pi->current_pos_ = evt.pos;
+    //Need this field? section?
     pi->sections_ = context< HandlingFileState >().GetSections();
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();    
     context< PlayerFsm >().ui_->DrawBar(pi);
     context< PlayerFsm >().player_.Seek(evt.pos);
     //set the current pos 
@@ -98,7 +101,8 @@ fsm::result NormalPlayingState::react( const PlayFinishedEvent& evt){
     LOG(logINFO) << __FUNCTION__;
     PaintInfo* pi = new PaintInfo();
     pi->current_pos_ = 0;
-    pi->sections_ = context< HandlingFileState >().GetSections();    
+    pi->sections_ = context< HandlingFileState >().GetSections();
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();    
     context< PlayerFsm >().ui_->DrawBar(pi);
     context< PlayerFsm >().player_.Seek(0);
     context< PlayerFsm >().player_.Play();
@@ -113,6 +117,7 @@ fsm::result NormalPlayingState::react( const RequestPaintInfoEvent& evt)
     PaintInfo* pi = new PaintInfo;
     pi->current_pos_ = cur_pos;
     pi->sections_ = context< HandlingFileState >().GetSections();
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();    
     context< PlayerFsm >().ui_->DrawBar(pi);
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );        
 }
@@ -162,7 +167,7 @@ void RepeatedPlayingState::Repeat()
     pi->end_pos_ = end_pos;
     pi->current_pos_ = start_pos;
     pi->sections_ = context< HandlingFileState >().GetSections();
-
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();
     context< PlayerFsm >().ui_->DrawBar(pi);
     context< HandlingFileState >().SetCurrentPos( start_pos );
     context< PlayerFsm >().player_.Play(start_pos, end_pos);
@@ -219,7 +224,7 @@ fsm::result RepeatedPlayingState::react( const RequestPaintInfoEvent& evt)
     pi->end_pos_ = end_pos;
     pi->current_pos_ = cur_pos;
     pi->sections_ = context< HandlingFileState >().GetSections();
-
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();
     context< PlayerFsm >().ui_->DrawBar(pi);
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );        
 }
@@ -245,6 +250,7 @@ fsm::result PausingState::react( const RequestPaintInfoEvent& evt){
     PaintInfo* pi = new PaintInfo;
     pi->current_pos_ = cur_pos;
     pi->sections_ = context< HandlingFileState >().GetSections();
+    pi->length_ = context< PlayerFsm >().player_.GetFileLength();    
     context< PlayerFsm >().ui_->DrawBar(pi);
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );
 }

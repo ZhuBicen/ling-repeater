@@ -133,7 +133,7 @@ private:
     CComPtr<ITaskbarList3> taskbar_list_;
     static const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
     CoolButton play_button_, close_button_, theme_button_;
-    FileNameStatic file_name_static_;
+    CoolLabel file_name_static_, time_label_;
 
     std::vector<Theme::Redrawer*> redrawers_;
 };

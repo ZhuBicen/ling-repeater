@@ -2,10 +2,10 @@
 #include "PreCompiled.hpp"
 #include "Theme.hpp"
 
-class FileNameStatic: public CWindowImpl<FileNameStatic, CStatic>, public Theme::Redrawer
+class CoolLabel: public CWindowImpl<CoolLabel, CStatic>, public Theme::Redrawer
 {
 public:
-    BEGIN_MSG_MAP_EX(FileNameStatic)
+    BEGIN_MSG_MAP_EX(CoolLabel)
         MSG_WM_PAINT(OnPaint)
     END_MSG_MAP()
 
@@ -31,14 +31,14 @@ public:
 
         EndPaint(&ps);
     }
-    FileNameStatic(){
+    CoolLabel(){
         bg_color_ = Theme::Get()->BgColor();
     }
     void Redraw(){
         bg_color_ = Theme::Get()->BgColor();
         InvalidateRect(NULL);
     }
-    void SetFileName(const std::wstring& file_name){
+    void SetText(const std::wstring& file_name){
         file_name_ = file_name;
         CRect rect;
         GetClientRect(&rect);

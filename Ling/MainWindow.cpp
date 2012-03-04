@@ -72,6 +72,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
     close_button_.SubclassWindow(GetDlgItem(IDOK));
     play_button_.SubclassWindow(GetDlgItem(ID_PLAY));
     theme_button_.SubclassWindow(GetDlgItem(IDC_THEME));
+    time_label_.SubclassWindow(GetDlgItem(IDC_TIME));
 
     redrawers_.push_back(this);
     redrawers_.push_back(&bar_);
@@ -79,6 +80,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
     redrawers_.push_back(&close_button_);
     redrawers_.push_back(&theme_button_);
     redrawers_.push_back(&play_button_);
+    redrawers_.push_back(&time_label_);
     return TRUE;
 }
 
@@ -188,7 +190,7 @@ LRESULT CMainDlg::OnTaskbarBtnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, B
 LRESULT CMainDlg::OnSetFileInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     FileInfo* p_file_info = reinterpret_cast<FileInfo*> (wParam);
-    file_name_static_.SetFileName(p_file_info->file_);
+    file_name_static_.SetText(p_file_info->file_);
     bar_.SetLength(lParam);
     delete p_file_info;
     bHandled = TRUE;
