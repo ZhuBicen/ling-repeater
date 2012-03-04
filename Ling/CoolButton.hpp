@@ -53,7 +53,7 @@ public:
     //    return 1;   // no background painting needed
     //}
     void Redraw(){
-        bg_color_ = Theme::Get()->BgColor();
+        bg_color_ = Theme::Get()->TitleColor();
         InvalidateRect(NULL);
     }
     void SwapNormalHoverImage()
