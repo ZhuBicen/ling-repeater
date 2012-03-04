@@ -8,7 +8,7 @@ CoolButton::CoolButton(std::wstring normal, std::wstring hover):
     //so, assign a true explictly.
      normal_image_.Load(normal.c_str());
      hover_image_.Load(hover.c_str());
-     bg_color_ = Theme::Get()->BgColor();
+     bg_color_ = Theme::Get()->TitleColor();
 }
 
 CoolButton::~CoolButton(void)
