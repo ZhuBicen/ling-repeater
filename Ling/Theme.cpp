@@ -3,9 +3,9 @@
 
 void Theme::Init(){
     index_ = 0;
-    themes_[0] = new Native();
+    themes_[2] = new Native();
     themes_[1] = new QQ();
-    themes_[2] = new DeepBlue();
+    themes_[0] = new DeepBlue();
 }
 Theme::ITheme* Theme::Get(){
     return themes_[index_];

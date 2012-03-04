@@ -21,6 +21,8 @@ public:
     virtual Color BarFrame1Color() = 0;
     virtual Color BarFrame2Color() = 0;
     virtual int Frame() = 0;
+
+    virtual Color TitleColor() {return Color(77, 77, 77);}
 };
 
 class Native: public ITheme{
@@ -49,14 +51,14 @@ public:
 
 class DeepBlue:public ITheme{
 public:
-    Color PlayColor() {return Pink;}
+    Color PlayColor() {return Color(29, 117, 197);}
     Color RepeateColor() {return White;}
     Color SectionColor() { return Pink;}
-    Color BgColor() { return Blue;}
-    Color BarBgColor() {return White;}
-    Color BarFrame1Color() { return White;}
-    Color BarFrame2Color(){ return White;}
-    int Frame(){ return 2;}
+    Color BgColor() { return Color(62, 62, 62);}
+    Color BarBgColor() {return Color(46, 46, 46);}
+    Color BarFrame1Color() { return Color(29, 29, 29);}
+    Color BarFrame2Color(){ return Color(77, 77, 77);}
+    int Frame(){ return 1;}
 };
 
 
