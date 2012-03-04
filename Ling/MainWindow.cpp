@@ -6,6 +6,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 {
     // center the dialog on the screen
     CenterWindow();
+    SetWindowText(L"·çÓï");
     SetWindowPos(HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 
     // set icons
@@ -212,6 +213,26 @@ LRESULT CMainDlg::OnSetRepo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 
 LRESULT  CMainDlg::OnDrawBar(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+    long current_pos, length;
+    current_pos = INVALID_POS;
+    length = INVALID_POS;
+    if (lParam == 0){
+        const PaintInfo* pi = (PaintInfo*)wParam;
+        current_pos = pi->current_pos_;
+        length = pi->length_;
+
+    }else if (lParam == 1){
+        const PaintUpdateInfo* pui= (PaintUpdateInfo*)wParam;
+        if (pui->color_ == 0){
+            current_pos = pui->current_pos_;
+            length = pui->length_;
+        }
+    }else{
+        LOG(logERROR) << "Illegal lParam " << lParam ;
+    }
+    if (current_pos != INVALID_POS && length != INVALID_POS){
+        time_label_.SetText(GetTime(length - current_pos));
+    }
     bar_.SendMessage(uMsg, wParam, lParam);
     return TRUE;
 }

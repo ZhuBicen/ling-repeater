@@ -57,6 +57,7 @@ fsm::result NormalPlayingState::react( const UpdatePosEvent& evt){
     pui->color_ = 0;
     pui->current_pos_  =  context< HandlingFileState >().GetCurrentPos();
     pui->previous_pos_ =  context< HandlingFileState >().GetPreviousPos();
+    pui->length_ = context< PlayerFsm >().player_.GetFileLength();
     context< PlayerFsm >().ui_->UpdateBar(pui);
         
     return fsm::detail::result_utility::make_result( fsm::detail::consumed );

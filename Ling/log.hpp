@@ -124,7 +124,7 @@ public:
 class ConsoleLog : public Log<Output2Console> {};
 
 #ifndef FILELOG_MAX_LEVEL
-#define FILELOG_MAX_LEVEL logDEBUG
+#define FILELOG_MAX_LEVEL logDEBUG1
 #endif
 
 #define LOG(level) \

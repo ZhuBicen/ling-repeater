@@ -188,3 +188,12 @@ std::ostream& operator<<(std::ostream& os, const LingJson& json)
     }
     return os;
 }
+std::wstring GetTime(long ms){
+    long secs = ms /1000;
+    long minute = secs / 60;
+    long sec = secs % 60;
+    wchar_t buffer[32];
+    swprintf(buffer, 32, L"%d:%d", minute, sec);
+    return buffer;
+}
+        

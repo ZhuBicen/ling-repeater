@@ -37,5 +37,5 @@ private:
 };
 
 void GetMediaFiles(const char* p_media_repo, std::vector<path>& p_media_files);
-
+std::wstring GetTime(long ms);
 #endif
