@@ -61,6 +61,7 @@ class HandlingFileState: public fsm::state< HandlingFileState, PlayerFsm, Playin
 public:
     HandlingFileState( my_context ctx );
     ~HandlingFileState(){
+        LOG(logINFO) << __FUNCTION__;
         context< PlayerFsm >().json_.UpdateFileInfo(file_info_);
     }
 

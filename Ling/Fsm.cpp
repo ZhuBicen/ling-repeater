@@ -72,6 +72,7 @@ fsm::result HandlingFileState::react( const OpenFileEvent& evt){
     LOG(logINFO) << __FUNCTION__ << evt ;
     context< PlayerFsm >().player_.CloseFile();
     context< PlayerFsm >().file_name_ = evt.file_name;
+    context< PlayerFsm >().json_.UpdateFileInfo(file_info_);    
     //close current file
     context< PlayerFsm >().player_.OpenFile(
             context< PlayerFsm >().file_name_);
