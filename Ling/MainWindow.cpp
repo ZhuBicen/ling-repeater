@@ -31,7 +31,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
     RECT rect;
     ::GetClientRect(hwnd, &rect);
     
-    title_rect_.bottom = 27;//rect.bottom - rect.top;
+    title_rect_.bottom = rect.bottom - rect.top;
 
     POINT leftTop;
     leftTop.x = rect.left;
@@ -266,8 +266,6 @@ void CMainDlg::OnPaint(CDCHandle dc)
     SolidBrush br(bg_color_);
     Gdiplus::Status st = gfx.FillRectangle(&br, rect);
 
-
-    DrawTitle();
 	CGdiPlusBitmapResource logo(L"LING_LOGO");
     Rect icon_rect(icon_rect_.left, icon_rect_.top, icon_rect_.right, icon_rect_.bottom);
     gfx.DrawImage(logo, icon_rect);
@@ -344,27 +342,4 @@ LRESULT CMainDlg::OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &
             (*ci)->Redraw();
     }
     return TRUE;
-}
-
-void CMainDlg::DrawTitle()
-{
-
-    Rect rect(title_rect_.left, title_rect_.top,
-              title_rect_.right - title_rect_.left,
-              title_rect_.bottom - title_rect_.top);
-    
-    HDC hdc = GetDC();
-    Graphics gfx(hdc);
-    SolidBrush br(Color(0, 0, 0));
-    gfx.FillRectangle(&br, rect);
-    
-    Rect rect1 = rect;
-    rect1.Inflate(-1, -1);
-    SolidBrush br1(Color(92, 92, 92));
-    gfx.FillRectangle(&br1, rect1);
-    
-    SolidBrush br2(Color(77, 77, 77));
-    Rect rect2 = rect1;
-    rect2.Inflate(-1, -1);
-    gfx.FillRectangle(&br2, rect2);
 }

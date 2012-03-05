@@ -32,10 +32,10 @@ public:
         EndPaint(&ps);
     }
     FileNameStatic(){
-        bg_color_ = Theme::Get()->TitleColor();
+        bg_color_ = Theme::Get()->BgColor();
     }
     void Redraw(){
-        bg_color_ = Theme::Get()->TitleColor();
+        bg_color_ = Theme::Get()->BgColor();
         InvalidateRect(NULL);
     }
     void SetFileName(const std::wstring& file_name){

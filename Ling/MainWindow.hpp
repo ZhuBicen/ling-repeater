@@ -121,9 +121,6 @@ public:
 
     //implement redrawer
     void Redraw();
-
-    //
-    void DrawTitle();
 private:
     Color bg_color_;
     std::map<int, std::wstring> media_files_;
