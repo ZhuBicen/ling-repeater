@@ -50,6 +50,8 @@ public:
 		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
         MSG_WM_NCHITTEST(OnNcHitTest)
 		COMMAND_ID_HANDLER(IDOK, OnOK)
+        COMMAND_ID_HANDLER(IDB_CLOSE, OnOK)
+        COMMAND_ID_HANDLER(IDM_OPEN, OnOpen)
 
         MSG_WM_DROPFILES(OnDropFiles)
         MSG_WM_HOTKEY(OnHotKey)
@@ -63,6 +65,7 @@ public:
         COMMAND_ID_HANDLER(IDB_PIN, OnPinButtonClicked)
         COMMAND_ID_HANDLER(IDB_MARK, OnMarkButtonClicked)
         COMMAND_ID_HANDLER(IDC_THEME, OnChangeTheme)
+        COMMAND_ID_HANDLER(IDB_MENU, OnShowMenu)
         //自定义消息
         MESSAGE_HANDLER(WM_STARTTIMER,   OnStartTimer)
         MESSAGE_HANDLER(WM_STOPTIMER,    OnStopTImer)
@@ -103,6 +106,7 @@ public:
     LRESULT OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnTaskbarBtnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled);
+    LRESULT OnShowMenu(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled);    
 
 //  Handler prototypes (uncomment arguments if needed):
 //	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -114,6 +118,7 @@ public:
 	LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+    LRESULT OnOpen(WORD, WORD, HWND, BOOL&);
 	void CloseDialog(int nVal);
 
     //TODO: remove this friend

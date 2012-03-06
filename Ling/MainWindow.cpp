@@ -1,6 +1,8 @@
 #include "Precompiled.hpp"
 #include "MainWindow.hpp"
 #include "CGdiPlusBitmap.h"
+#include "AboutDlg.h"
+#include "AtlDlgs.h"
 const UINT CMainDlg::TASKBAR_CREATE_MESSAGE = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
 LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -71,7 +73,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
     //显示文件名
     file_name_static_.SubclassWindow(GetDlgItem(IDC_FILENAME));
     close_button_.SubclassWindow(GetDlgItem(IDOK));
-    play_button_.SubclassWindow(GetDlgItem(ID_PLAY));
+    play_button_.SubclassWindow(GetDlgItem(IDB_MENU));
     theme_button_.SubclassWindow(GetDlgItem(IDC_THEME));
     time_label_.SubclassWindow(GetDlgItem(IDC_TIME));
 
@@ -98,8 +100,8 @@ LRESULT CMainDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
 LRESULT CMainDlg::OnAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-    //CAboutDlg dlg;
-    //dlg.DoModal();
+    CAboutDlg dlg;
+    dlg.DoModal();
     return 0;
 }
 
@@ -236,13 +238,17 @@ LRESULT  CMainDlg::OnDrawBar(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
     bar_.SendMessage(uMsg, wParam, lParam);
     return TRUE;
 }
-
-LRESULT CMainDlg::OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT CMainDlg::OnShowMenu(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled)
 {
-    media_files_.clear();
-
+    HWND button = GetDlgItem(wID);
+    RECT rect;
+    ::GetClientRect(button, &rect);
+    POINT p;
+    p.x = rect.left;
+    p.y = rect.bottom;
+    ::ClientToScreen(button, &p);
     HMENU hMenu = LoadMenu(_Module.GetModuleInstance(), L"LING_POP");
-    hMenu = GetSubMenu (hMenu, 0) ;
+    hMenu = GetSubMenu (hMenu, 2) ;
 
     HMENU file_menu = ::CreateMenu(); 
 
@@ -264,6 +270,17 @@ LRESULT CMainDlg::OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, 
     }
     ::InsertMenu (hMenu, 0, MF_POPUP | MF_BYPOSITION, (UINT_PTR)file_menu, L"文件") ;
 
+    TrackPopupMenu (hMenu, TPM_RIGHTBUTTON, p.x, p.y, 0, m_hWnd, NULL) ;
+    return TRUE;
+}
+    
+    
+LRESULT CMainDlg::OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+    media_files_.clear();
+
+    HMENU hMenu = LoadMenu(_Module.GetModuleInstance(), L"LING_POP");
+    hMenu = GetSubMenu (hMenu, 0) ;
     ContextMenuInfo* pcmi = (ContextMenuInfo*)wParam;
 
     if(pcmi->mark_){
@@ -364,5 +381,20 @@ LRESULT CMainDlg::OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &
         ci != redrawers_.end(); ci++){
             (*ci)->Redraw();
     }
+    return TRUE;
+}
+LRESULT CMainDlg::OnOpen(WORD, WORD, HWND, BOOL&)
+{
+    CFileDialog cFilePath( TRUE,NULL,NULL,OFN_SHAREAWARE,_T("MP3 Files (*.mpe)\0*.mp3\0All Files (*.*)\0*.*||")
+        );
+    WCHAR strBuffer[1024] = {0};
+    cFilePath.m_ofn.lpstrFile = strBuffer;
+    cFilePath.m_ofn.nMaxFile = 65535;
+    if( cFilePath.DoModal() == IDOK )
+    {
+        LPWSTR lpFilePath = cFilePath.m_ofn.lpstrFile;
+        mq_.PutMessage(boost::shared_ptr<Message>(new OpenFileEvent(strBuffer)));
+    }
+
     return TRUE;
 }
