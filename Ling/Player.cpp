@@ -110,3 +110,7 @@ bool Player::IsPlaying()
     player_->GetStatus(&st);
     return st.fPlay || st.nLoop;
 }
+
+bool Player::IsSupport(std::wstring file){
+    return player_->GetFileFormatW(file.c_str()) != sfUnknown;
+}

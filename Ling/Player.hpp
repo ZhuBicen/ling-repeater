@@ -30,7 +30,7 @@ public:
     bool Stop();
     
     bool IsPlaying();
-
+    bool IsSupport(std::wstring file);
 private:
     libZPlay::ZPlay* player_;
     MessageQueue* mq_;

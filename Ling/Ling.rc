@@ -72,8 +72,8 @@ LING_POP MENU
     POPUP "sys"
     {
         MENUITEM "打开", IDM_OPEN
-        MENUITEM "关于", IDM_ABOUT
         MENUITEM "设置", IDM___2
+        MENUITEM "关于", IDM_ABOUT
         MENUITEM "退出", IDB_CLOSE
     }
 }

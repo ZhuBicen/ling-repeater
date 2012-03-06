@@ -1,6 +1,7 @@
 #include "Precompiled.hpp"
 #include "Utils.hpp"
 #include <fstream>
+#include "Player.hpp"
 using namespace std;
 using namespace json_spirit;
 using boost::filesystem::path;
@@ -18,11 +19,15 @@ void GetMediaFiles(const char* p_media_repo, std::vector<path>& p_media_files)
         return ;
     }
 
+    Player player(NULL);
     RDI beg(p_media_dir), end;
     while(beg != end){
         if (!is_directory(*beg) && !boost::filesystem::is_empty(*beg)){
-            if(beg->path().extension() == ".mp3")
+            if(player.IsSupport(beg->path().wstring())){
                 p_media_files.push_back(beg->path().wstring());
+            }else{
+                LOG(logWARNING) << "Can't recogonize file format:" << beg->path().string();
+            }
         }
         beg++;
     }

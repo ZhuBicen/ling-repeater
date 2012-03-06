@@ -260,16 +260,17 @@ LRESULT CMainDlg::OnShowMenu(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHa
             LOG(logERROR) << "Warning: Not enoughe ID can be used for the media files." << std::endl;
     }
 
-    unsigned int i = 0;
-    for( std::vector<path>::const_iterator it = media_files.begin();
-        it != media_files.end() && i < id_count; 
-        ++it, ++i){
+    if (!media_files.empty()){
+        unsigned int i = 0;
+        for( std::vector<path>::const_iterator it = media_files.begin();
+             it != media_files.end() && i < id_count; 
+             ++it, ++i){
             int menu_id = ID_FIRST_MEDIA_FILE + i;
             AppendMenu (file_menu, MF_STRING, menu_id, it->filename().wstring().c_str());
             media_files_[menu_id] = it->wstring();
+        }
+        ::InsertMenu (hMenu, 1, MF_POPUP | MF_BYPOSITION, (UINT_PTR)file_menu, L"文件") ;
     }
-    ::InsertMenu (hMenu, 0, MF_POPUP | MF_BYPOSITION, (UINT_PTR)file_menu, L"文件") ;
-
     TrackPopupMenu (hMenu, TPM_RIGHTBUTTON, p.x, p.y, 0, m_hWnd, NULL) ;
     return TRUE;
 }
@@ -385,15 +386,19 @@ LRESULT CMainDlg::OnChangeTheme(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &
 }
 LRESULT CMainDlg::OnOpen(WORD, WORD, HWND, BOOL&)
 {
-    CFileDialog cFilePath( TRUE,NULL,NULL,OFN_SHAREAWARE,_T("MP3 Files (*.mpe)\0*.mp3\0All Files (*.*)\0*.*||")
-        );
+    CFileDialog cFilePath( TRUE,NULL,NULL,OFN_SHAREAWARE,_T("MP3 Files\0*.mp3\0 AllFiles (*.*)\0*.*\0") );
     WCHAR strBuffer[1024] = {0};
     cFilePath.m_ofn.lpstrFile = strBuffer;
-    cFilePath.m_ofn.nMaxFile = 65535;
+    cFilePath.m_ofn.nMaxFile = 1024;
     if( cFilePath.DoModal() == IDOK )
     {
         LPWSTR lpFilePath = cFilePath.m_ofn.lpstrFile;
-        mq_.PutMessage(boost::shared_ptr<Message>(new OpenFileEvent(strBuffer)));
+        Player player(NULL);
+        if (player.IsSupport(lpFilePath)){
+            mq_.PutMessage(boost::shared_ptr<Message>(new OpenFileEvent(lpFilePath)));
+        }else{
+            ::MessageBox(m_hWnd, L"不能识别的文件！", L"ERROR", MB_OK);
+        }
     }
 
     return TRUE;
