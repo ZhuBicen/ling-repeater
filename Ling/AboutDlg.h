@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
+#include "version.hpp"
 class CAboutDlg : public CDialogImpl<CAboutDlg>
 {
 public:
@@ -23,6 +23,12 @@ public:
 	LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 	{
 		CenterWindow(GetParent());
+        HWND hwnd = GetDlgItem(IDC_VERSION);
+        wchar_t versionInfo[64];
+        ::GetWindowText(hwnd, versionInfo, 64);
+        std::wstring version(versionInfo);
+        version += VERSION;
+        ::SetWindowText(hwnd, version.c_str());
 		return TRUE;
 	}
 

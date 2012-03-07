@@ -5,6 +5,7 @@
 #define IDR_MAINFRAME                           133
 #define IDD_ABOUTBOX                            136
 #define IDD_MAINDLG                             138
+#define IDC_VERSION                             1000
 #define IDC_TIME                                1001
 #define IDC_THEME                               1002
 #define IDM_ABOUT                               40000
