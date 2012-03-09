@@ -3,6 +3,7 @@
 #include "CGdiPlusBitmap.h"
 #include "AboutDlg.h"
 #include "AtlDlgs.h"
+#include "SettingDlg.hpp"
 const UINT CMainDlg::TASKBAR_CREATE_MESSAGE = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
 LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -101,6 +102,13 @@ LRESULT CMainDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 LRESULT CMainDlg::OnAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
     CAboutDlg dlg;
+    dlg.DoModal();
+    return 0;
+}
+
+LRESULT CMainDlg::OnSetting ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled )
+{
+    SettingDlg dlg;
     dlg.DoModal();
     return 0;
 }

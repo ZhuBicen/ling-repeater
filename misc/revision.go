@@ -25,7 +25,7 @@ func main(){
 	var linesToWrite string
 	var needUpdate bool
 	for _, line := range lines{
-		if strings.Index(line, "const VERSION") != -1{
+		if strings.Index(line, "const wchar_t* VERSION") != -1{
 			from := strings.Index(line, `"`)
 			to   := strings.LastIndex(line, `"`)
 
@@ -60,6 +60,8 @@ func main(){
 			fmt.Println(err)
 			os.Exit(-1)
 		}
+	}else{
+		fmt.Println("No need to update the revision")
 	}
 	os.Exit(0)
 }

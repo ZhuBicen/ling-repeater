@@ -61,6 +61,7 @@ public:
         MSG_WM_CONTEXTMENU(OnContextMenu)
         COMMAND_ID_HANDLER(IDM_PAUSE_RESUME, OnPauseResumeButtonClicked)
         COMMAND_ID_HANDLER(IDM_ABOUT, OnAbout)
+        COMMAND_ID_HANDLER(IDM_SETTING, OnSetting)
         COMMAND_RANGE_HANDLER_EX(ID_FIRST_MEDIA_FILE, ID_LAST_MEDIA_FILE, OnOpenMediaFile)
         COMMAND_ID_HANDLER(IDB_PIN, OnPinButtonClicked)
         COMMAND_ID_HANDLER(IDB_MARK, OnMarkButtonClicked)
@@ -88,6 +89,7 @@ public:
     LRESULT OnCloseButtonClicked      ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled );
     LRESULT OnPauseResumeButtonClicked( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled );
     LRESULT OnAbout                   ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled );
+    LRESULT OnSetting                 ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled );    
     LRESULT OnPinButtonClicked        ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled );
     LRESULT OnMarkButtonClicked        ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled );
     LRESULT OnCreate(LPCREATESTRUCT lpcs);
