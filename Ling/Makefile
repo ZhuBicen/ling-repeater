@@ -3,5 +3,6 @@ all:
 	vcbuild.exe /useenv Ling.vcproj "Release|Win32"
 	Release/Ling.exe
 clean:
-	
+	vcbuild /clean
+
 
