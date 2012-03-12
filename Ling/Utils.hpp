@@ -1,7 +1,10 @@
 #ifndef LING_UTILS_HPP
 #define LING_UTILS_HPP
 using boost::filesystem::path;
-
+struct Hotkey{
+    UINT fsModifiers_;
+    UINT vk_ ;
+};
 
 struct Section
 {
@@ -32,6 +35,7 @@ private:
     FileInfos file_infos_;
     std::string repo_;
     boost::filesystem::path json_path_;
+    std::vector<Hotkey> hotkeys_;
 private:
     FileInfo LingJson::ReadHistory(const json_spirit::Object& obj);
 };

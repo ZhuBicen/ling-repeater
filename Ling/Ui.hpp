@@ -8,7 +8,7 @@
 #define WM_STOPTIMER                   WM_USER + 0x002
 #define WM_SETFILEINFO                 WM_USER + 0x003
 #define WM_EXITAPP                     WM_USER + 0x004
-#define WM_SETREPO                     WM_USER + 0x005
+#define WM_SETCONFINFO                     WM_USER + 0x005
 #define WM_DRAWBAR                     WM_USER + 0x006
 #define WM_CONTEXTMENUINFO             WM_USER + 0x007
 
@@ -58,7 +58,7 @@ public:
         PostMessage_(WM_EXITAPP, 0, 0);
     }
 
-    void SetRepo(const char* p_media_repo){
+    void SetConfInfo(const char* p_media_repo){
         PostMessage_(WM_SETREPO, (int)p_media_repo, 0);
     }
 

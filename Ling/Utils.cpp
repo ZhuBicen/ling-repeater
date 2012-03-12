@@ -107,6 +107,16 @@ LingJson::LingJson()
             if( name == "repo"){
                 repo_ = value.get_str();
             }
+            if( name == "hotkey"){
+                Hotkey hk;
+                const Array& arr = value.get_array();
+                for(unsigned int i = 0; i < arr.size(); ++i){
+                    const Array& arr2 = arr[i].get_array();
+                    hk.vk_ = arr2[0].get_int();
+                    hk.fsModifiers_ = arr2[1].get_int();
+                    hotkeys_.push_back(hk);
+                }
+            }                                       
             if( name == "history"){
                 const Array& arr = value.get_array();
                 for(unsigned int i = 0; i < arr.size(); ++i){
@@ -143,7 +153,17 @@ LingJson::~LingJson()
         file_info_object.push_back(Pair("sections", sections_array));
         history_array.push_back(file_info_object);
     }
+
+    Array hotkey_array;
+    for(std::vector<Hotkey>::const_iterator vhci = hotkeys_.begin(); vhci != hotkeys_.end(); ++vhci){
+        std::vector< int > int_vect;
+        int_vect.push_back( vhci->vk_);
+        int_vect.push_back( vhci->fsModifiers_);
+        const Value val( int_vect.begin(), int_vect.end() );
+        hotkey_array.push_back(val);
+    }
     root_object.push_back(Pair("repo", repo_));
+    root_object.push_back(Pair("hotkey", hotkey_array));
     root_object.push_back(Pair("history", history_array));
 
     ofstream os( json_path_.string().c_str());

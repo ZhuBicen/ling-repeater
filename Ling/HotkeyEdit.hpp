@@ -5,10 +5,7 @@
 using std::string;
 
 string vkToString(int vk);
-struct Hotkey{
-    UINT fsModifiers_;
-    UINT vk_ ;
-};
+
 std::ostream& operator<< (std::ostream& os, const Hotkey& hotkey)
 {
     if (hotkey.fsModifiers_ & MOD_SHIFT) {
