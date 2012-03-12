@@ -128,6 +128,8 @@ public:
 
     //implement redrawer
     void Redraw();
+    bool RegisterHotkeys();
+    bool UnregisterHotkeys();
 private:
     Color bg_color_;
     std::map<int, std::wstring> media_files_;
