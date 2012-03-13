@@ -72,7 +72,7 @@ public:
         MESSAGE_HANDLER(WM_STOPTIMER,    OnStopTImer)
         MESSAGE_HANDLER(WM_SETFILEINFO,  OnSetFileInfo)
         MESSAGE_HANDLER(WM_EXITAPP,      OnExitApp)
-        MESSAGE_HANDLER(WM_SETCONFINFO,      OnSetRepo)
+        MESSAGE_HANDLER(WM_SETCONFINFO,      OnSetConfInfo)
         MESSAGE_HANDLER(WM_DRAWBAR,      OnDrawBar)
         MESSAGE_HANDLER(WM_CONTEXTMENUINFO, OnShowContextMenuRes)
         MESSAGE_HANDLER(TASKBAR_CREATE_MESSAGE, OnTaskbarBtnCreated)
@@ -103,7 +103,7 @@ public:
     //LRESULT OnSetStartPos (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     //LRESULT OnSetEndPos   (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnExitApp     (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-    LRESULT OnSetRepo     (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+    LRESULT OnSetConfInfo     (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnDrawBar     (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnShowContextMenuRes(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     LRESULT OnTaskbarBtnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -134,11 +134,12 @@ private:
     Color bg_color_;
     std::map<int, std::wstring> media_files_;
     CRect title_rect_, icon_rect_;
-    const char* p_repo_;
+    std::wstring repo_;
     static const int timerId_ = 199;
     MessageQueue& mq_;
     ProgressBar bar_;
     ATOM hotkey_;
+    std::vector<Hotkey> hotkeys_;
     CComPtr<ITaskbarList3> taskbar_list_;
     static const UINT TASKBAR_CREATE_MESSAGE;// = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
     CoolButton play_button_, close_button_, theme_button_;

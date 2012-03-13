@@ -5,12 +5,12 @@
 using namespace std;
 using namespace json_spirit;
 using boost::filesystem::path;
-void GetMediaFiles(const char* p_media_repo, std::vector<path>& p_media_files)
+void GetMediaFiles(std::wstring media_repo, std::vector<path>& p_media_files)
 {
-    if(!p_media_repo){ 
+    if(media_repo.empty()){ 
         return;
     }
-    path p_media_dir (p_media_repo);
+    path p_media_dir (media_repo);
     typedef boost::filesystem::directory_iterator DI;
     typedef boost::filesystem::recursive_directory_iterator RDI;
 
@@ -195,9 +195,12 @@ void LingJson::UpdateFileInfo(const FileInfo& file_info)
     file_infos_.push_back(file_info);
 }
 
-const char* LingJson::GetRepoPath()const
+ConfInfo LingJson::GetConfInfo()const
 {
-    return repo_.c_str();
+    ConfInfo ci;
+    ci.repo_ = path(repo_).wstring();
+    ci.hotkeys_ = hotkeys_;
+    return ci;
 }
 std::ostream& operator<<(std::ostream& os, const LingJson& json)
 {

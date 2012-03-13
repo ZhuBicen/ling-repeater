@@ -58,8 +58,8 @@ public:
         PostMessage_(WM_EXITAPP, 0, 0);
     }
 
-    void SetConfInfo(const char* p_media_repo){
-        PostMessage_(WM_SETREPO, (int)p_media_repo, 0);
+    void SetConfInfo(const ConfInfo* p_conf_info){
+        PostMessage_(WM_SETCONFINFO, (int)p_conf_info, 0);
     }
 
     void DrawBar(PaintInfo* pi){

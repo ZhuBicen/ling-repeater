@@ -27,10 +27,6 @@ struct ContextMenuInfo{
     int  y_;
 };
 
-struct ConfInfo{
-    std::string repo_;
-    std::vector<Hotkey> hotkeys_;
-};
 class UiInterface
 {
 public:

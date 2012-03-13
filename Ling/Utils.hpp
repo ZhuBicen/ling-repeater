@@ -17,6 +17,10 @@ struct FileInfo{
     Sections sections_;
 };
 
+struct ConfInfo{
+    std::wstring repo_;
+    std::vector<Hotkey> hotkeys_;
+};
 
 class LingJson
 {
@@ -25,7 +29,7 @@ public:
     ~LingJson();
     FileInfo GetFileInfo(std::wstring file_name)const ;
     void UpdateFileInfo(const FileInfo& file_info);
-    const char* GetRepoPath()const ;
+    ConfInfo GetConfInfo()const ;
 
     friend std::ostream& operator<<(std::ostream& os, const LingJson&);
 
@@ -40,6 +44,6 @@ private:
     FileInfo LingJson::ReadHistory(const json_spirit::Object& obj);
 };
 
-void GetMediaFiles(const char* p_media_repo, std::vector<path>& p_media_files);
+void GetMediaFiles(std::wstring media_repo, std::vector<path>& p_media_files);
 std::wstring GetTime(long ms);
 #endif

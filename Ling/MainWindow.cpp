@@ -201,9 +201,13 @@ LRESULT CMainDlg::OnExitApp (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
     return TRUE;
 }
 
-LRESULT CMainDlg::OnSetRepo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT CMainDlg::OnSetConfInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-    p_repo_ = (char*)(wParam);
+    //Should use scoped_ptr?
+    ConfInfo* pci = reinterpret_cast<ConfInfo*>(wParam);
+    repo_ = pci->repo_;
+    hotkeys_ = pci->hotkeys_;
+    delete pci;
     return TRUE;
 }
 
@@ -247,7 +251,7 @@ LRESULT CMainDlg::OnShowMenu(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHa
     HMENU file_menu = ::CreateMenu(); 
 
     std::vector<path> media_files;
-    GetMediaFiles(p_repo_, media_files);
+    GetMediaFiles(repo_, media_files);
     
     unsigned int id_count = ID_LAST_MEDIA_FILE - ID_FIRST_MEDIA_FILE + 1 ;
     if(id_count < media_files.size() ){
