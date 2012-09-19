@@ -1,7 +1,12 @@
 #ifndef __VERSION__HPP
 #define __VERSION__HPP
-const wchar_t* VERSION = L"424ffa8f60ad+";
+const wchar_t* VERSION = L"fff0fafc22c1+";
 #endif
     
+
+
+
+
+
 
 

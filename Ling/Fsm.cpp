@@ -5,7 +5,9 @@
 PlayerFsm::PlayerFsm(UiInterface* ui, Player& player, LingJson& json): 
 file_name_(L""), ui_(ui), player_(player), json_(json){
     initiate();
-    ui_->SetRepo(json_.GetRepoPath());
+    ConfInfo* pci = new ConfInfo();
+    *pci = json_.GetConfInfo();
+    ui_->SetConfInfo(pci);
 }
 
 

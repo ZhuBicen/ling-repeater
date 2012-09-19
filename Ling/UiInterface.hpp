@@ -48,7 +48,7 @@ public:
     //virtual void UpdateRepeatedPlayingStatus( long start_pos, long end_pos, long pre_pos, long new_pos) = 0;
 
     virtual void ExitApp() = 0;
-    virtual void SetRepo(const char*) = 0;
+    virtual void SetConfInfo(const ConfInfo*) = 0;
 
     virtual void DrawBar(PaintInfo* pi) = 0;
     virtual void UpdateBar(PaintUpdateInfo* pui) = 0;

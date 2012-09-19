@@ -54,23 +54,9 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
     bar_.Create(*this, CRect(leftTop.x, leftTop.y, rightBottom.x, rightBottom.y), TEXT("PROGRESS_BAR"));
     DragAcceptFiles(TRUE);
-    hotkey_ = GlobalAddAtom(TEXT("ZHUBICEN_REPEATER"));
-    if (!RegisterHotKey(m_hWnd, hotkey_, 0, VK_F1)){
-        LOG(logERROR) << "Can't register the hot key F1" ;
+    if (!RegisterHotkeys()){
+        LOG(logERROR) << "ERROR Can't register the hotkey";
     }
-    if (!RegisterHotKey(m_hWnd, hotkey_ + 1, 0, VK_F2)){
-        LOG(logERROR) << "Can't register the hot key F2" ;
-    }
-    if (!RegisterHotKey(m_hWnd, hotkey_ + 2, 0, VK_F3)){
-        LOG(logERROR) << "Can't register the hot key F3" ;
-    }
-    if (!RegisterHotKey(m_hWnd, hotkey_ + 3, 0, VK_F4)){
-        LOG(logERROR) << "Can't register the hot key F4" ;
-    }
-    if (!RegisterHotKey(m_hWnd, hotkey_ + 4, 0, VK_F5)){
-        LOG(logERROR) << "Can't register the hot key F5" ;
-    }
-
     //显示文件名
     file_name_static_.SubclassWindow(GetDlgItem(IDC_FILENAME));
     close_button_.SubclassWindow(GetDlgItem(IDOK));
@@ -215,9 +201,13 @@ LRESULT CMainDlg::OnExitApp (UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
     return TRUE;
 }
 
-LRESULT CMainDlg::OnSetRepo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT CMainDlg::OnSetConfInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-    p_repo_ = (char*)(wParam);
+    //Should use scoped_ptr?
+    ConfInfo* pci = reinterpret_cast<ConfInfo*>(wParam);
+    repo_ = pci->repo_;
+    hotkeys_ = pci->hotkeys_;
+    delete pci;
     return TRUE;
 }
 
@@ -261,7 +251,7 @@ LRESULT CMainDlg::OnShowMenu(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHa
     HMENU file_menu = ::CreateMenu(); 
 
     std::vector<path> media_files;
-    GetMediaFiles(p_repo_, media_files);
+    GetMediaFiles(repo_, media_files);
     
     unsigned int id_count = ID_LAST_MEDIA_FILE - ID_FIRST_MEDIA_FILE + 1 ;
     if(id_count < media_files.size() ){
@@ -410,4 +400,34 @@ LRESULT CMainDlg::OnOpen(WORD, WORD, HWND, BOOL&)
     }
 
     return TRUE;
+}
+
+bool CMainDlg::RegisterHotkeys(){
+    hotkey_ = GlobalAddAtom(TEXT("ZHUBICEN_REPEATER"));
+    if (!RegisterHotKey(m_hWnd, hotkey_, 0, VK_F1)){
+        LOG(logERROR) << "Can't register the hot key F1" ;
+        return false;
+    }
+    if (!RegisterHotKey(m_hWnd, hotkey_ + 1, 0, VK_F2)){
+        LOG(logERROR) << "Can't register the hot key F2" ;
+        return false;
+    }
+    if (!RegisterHotKey(m_hWnd, hotkey_ + 2, 0, VK_F3)){
+        LOG(logERROR) << "Can't register the hot key F3" ;
+        return false;        
+    }
+    if (!RegisterHotKey(m_hWnd, hotkey_ + 3, 0, VK_F4)){
+        LOG(logERROR) << "Can't register the hot key F4" ;
+        return false;
+    }
+    if (!RegisterHotKey(m_hWnd, hotkey_ + 4, 0, VK_F5)){
+        LOG(logERROR) << "Can't register the hot key F5" ;
+        return false;
+    }
+}
+bool CMainDlg::UnregisterHotkeys(){
+    for (int i = 0; i < 5; i++){
+        ::UnregisterHotKey(m_hWnd, hotkey_ + i);
+    }
+    return true;
 }
