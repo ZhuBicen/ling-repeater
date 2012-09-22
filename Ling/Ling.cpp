@@ -6,7 +6,7 @@
 #include "MainWindow.hpp"
 #include "MessageQueue.hpp"
 #include "Utils.hpp"
-#include "Fsm.hpp"
+#include "Playersc.hpp"
 #include "Theme.hpp"
 
 #pragma comment(lib, "gdiplus.lib")
@@ -16,12 +16,12 @@ CAppModule _Module;
 void FsmThreadFunc(MessageQueue& mq, UiInterface* ui, LingJson& json)
 {
     Player player(&mq);
-    PlayerFsm fsm(ui, player, json);
+    PlayerSc fsm("PlayerFsm", ui, player, json);
 
     for(;;){
         if( !fsm.terminated()){
             boost::shared_ptr<Message> msg = mq.GetMessage();
-            fsm.process_event(*msg);
+            fsm.ProcessEvent(msg.get());
             //boost::this_thread::sleep(boost::posix_time::seconds(2));
         }
         else{

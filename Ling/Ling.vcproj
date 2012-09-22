@@ -204,10 +204,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Fsm.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Ling.cpp"
 				>
 			</File>
@@ -224,7 +220,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PlayerState.cpp"
+				RelativePath=".\playersc.cpp"
 				>
 			</File>
 			<File
@@ -285,10 +281,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Fsm.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\log.hpp"
 				>
 			</File>
@@ -309,7 +301,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PlayerState.hpp"
+				RelativePath=".\playersc.hpp"
 				>
 			</File>
 			<File
@@ -322,6 +314,10 @@
 			</File>
 			<File
 				RelativePath=".\SettingDlg.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StateChart.hpp"
 				>
 			</File>
 			<File

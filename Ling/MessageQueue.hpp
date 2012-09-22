@@ -4,9 +4,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
-#include "Message.hpp"
+#include "StateChart.hpp"
 
-typedef boost::statechart::event_base Message;
+typedef Event Message;
 
 class MessageQueue{
 

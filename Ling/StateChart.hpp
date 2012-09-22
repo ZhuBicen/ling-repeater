@@ -3,8 +3,9 @@
 #include <string>
 #include <vector>
 class Event {
+public:
     Event(int id, void* data, int length): id_(id), data_(data), length_(length){}
-	int Id(){ return id_;}
+	int Id()const { return id_;}
     void* Data(){ return data_;}
     int Length(){ return length_;}
 private:
