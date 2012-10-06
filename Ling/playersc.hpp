@@ -9,7 +9,7 @@ class PlayerSc: public IStateChartBase {
 public:
     PlayerSc(std::string name, UiInterface* ui, Player& player, LingJson& json);
 	~PlayerSc(){};
-	bool Init(){ return true;};
+	bool Init();
 	bool terminated(){return false;}
     
 private:
@@ -40,12 +40,12 @@ private:
     
 
 private:
-    //StateT<PlayerSc>* waiting_for_file_state_;
-    //StateT<PlayerSc>* handling_file_state_;
-    //StateT<PLayerSc>* playing_state_;
-    //StateT<PlayerSc>* normal_playing_state_;
-    //StateT<PlayerSc>* repeated_playing_state_;
-    //StateT<PlayerSc>* pausing_state_;
+    StateT<PlayerSc> waiting_for_file_state_;
+    StateT<PlayerSc> handling_file_state_;
+    StateT<PlayerSc> playing_state_;
+    StateT<PlayerSc> normal_playing_state_;
+    StateT<PlayerSc> repeated_playing_state_;
+    StateT<PlayerSc> pausing_state_;
 
 private:
     std::wstring file_name_;
