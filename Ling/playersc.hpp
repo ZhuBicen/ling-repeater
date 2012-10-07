@@ -40,6 +40,16 @@ private:
     
 
 private:
+
+    long getFileLength(){
+        return player_.GetFileLength();
+    }
+    void setCurrentPos(long current_pos){
+        previous_pos_ = current_pos_;
+        current_pos_ = current_pos;
+    }
+
+    void repeat();
     StateT<PlayerSc> waiting_for_file_state_;
     StateT<PlayerSc> handling_file_state_;
     StateT<PlayerSc> playing_state_;
@@ -49,9 +59,13 @@ private:
 
 private:
     std::wstring file_name_;
+    FileInfo file_info_;
+    
     UiInterface* ui_;
     Player&      player_;
     LingJson&    json_;
+    bool         is_terminated_;
+    long start_pos_, end_pos_, current_pos_, previous_pos_;
 };
 
 
