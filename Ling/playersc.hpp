@@ -10,7 +10,7 @@ public:
     PlayerSc(std::string name, UiInterface* ui, Player& player, LingJson& json);
 	~PlayerSc(){};
 	bool Init();
-	bool terminated(){return false;}
+	bool terminated(){return is_terminated_;}
     
 private:
     bool waitingForFileStateHandler(Event*);

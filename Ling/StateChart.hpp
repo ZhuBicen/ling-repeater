@@ -17,7 +17,8 @@ private:
 
 class IStateBase {
 public:
-    IStateBase(std::string const & name): name_(name), super_state_(0){
+    IStateBase(std::string const & name): name_(name), super_state_(0),
+                                          deep_history_(0), shallow_history_(0){
     }
     virtual ~IStateBase(){};
     
@@ -199,21 +200,31 @@ private:
             return;
         }
 
+        IStateBase* exiting_state = current_state;
+		IStateBase* target_state;
 
-        current_state->ExitAction();
-        
-        IStateBase* state = current_state;
-
-		while( (state = state->SuperState()) != 0 ){
-            IStateBase* dest_state = next_state;
-            while( dest_state != 0 ){
-                if (state == dest_state) {
-                    return;
+        bool end_flag = false;
+		do {
+			end_flag = false;
+			target_state = next_state;
+            while( target_state != 0 && end_flag == false){
+                if (exiting_state == target_state->SuperState()){
+                    end_flag = true;
+                    exiting_state = 0;
+                }else{
+                    target_state = target_state->SuperState();
                 }
-                dest_state = dest_state->SuperState();
             }
-            state->ExitAction();
-        }
+            if (end_flag == false){
+                if (exiting_state->SuperState() != 0){
+                    exiting_state->SuperState()->SetShallowHistory(exiting_state);
+                    exiting_state->SuperState()->SetDeepHistory(current_state);
+                }
+                exiting_state->ExitAction();
+                exiting_state = exiting_state->SuperState();
+            }
+        }while( exiting_state != 0);
+
     }
 
     void CallEntryActions(IStateBase* current_state, IStateBase* next_state){

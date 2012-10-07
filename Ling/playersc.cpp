@@ -17,7 +17,7 @@ PlayerSc::PlayerSc(std::string name, UiInterface* ui, Player& player, LingJson& 
     waiting_for_file_state_.SetEntryAction(&PlayerSc::waitingForFileStateEntryAction);
     waiting_for_file_state_.SetExitAction(&PlayerSc::waitingForFileStateExitAction);
     handling_file_state_.SetEntryAction(&PlayerSc::handlingFileStateEntryAction);
-    handling_file_state_.SetExitAction(&PlayerSc::playingStateExitAction);
+    handling_file_state_.SetExitAction(&PlayerSc::handlingFileStateExitAction);
     playing_state_.SetEntryAction(&PlayerSc::playingStateEntryAction);
     playing_state_.SetExitAction(&PlayerSc::playingStateExitAction);
     normal_playing_state_.SetEntryAction(&PlayerSc::normalPlayingEntryAction);
@@ -323,6 +323,7 @@ bool PlayerSc::repeatedPlayingStateHandler(Event* evt){
 
 void PlayerSc::repeatedPlayingExitAction(){
     debug << __FUNCTION__;
+	player_.Stop();
 }
 
 
@@ -342,6 +343,9 @@ bool PlayerSc::pausingStateHandler(Event* evt){
         ui_->DrawBar(pi);
         return true;
     }
+	case EVENT_ID_PAUSE_RESUME:
+		StateTransition(playing_state_.DeepHistory());
+		return true;
     default:
         debug << " discard message";
         return false;
