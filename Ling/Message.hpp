@@ -42,7 +42,7 @@ struct RequestContextMenuInfoEvent{
 class EventFactory {
 public:
     static Event* makeEvent(int event_id){
-        return 0;
+        return new Event(event_id, 0, 0);
     }
     static Event* makeOpenFileEvent(std::wstring filename) {
         OpenFileEvent* ofe = new OpenFileEvent(filename);

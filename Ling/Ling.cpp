@@ -20,8 +20,8 @@ void FsmThreadFunc(MessageQueue& mq, UiInterface* ui, LingJson& json)
 
     for(;;){
         if( !fsm.terminated()){
-            boost::shared_ptr<Message> msg = mq.GetMessage();
-            fsm.ProcessEvent(msg.get());
+            Message* msg = mq.GetMessage();
+            fsm.ProcessEvent(msg);
             //boost::this_thread::sleep(boost::posix_time::seconds(2));
         }
         else{

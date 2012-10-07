@@ -17,7 +17,7 @@ ZplayCallbackFunc(void* instance, void *user_data, TCallbackMessage message,
 	switch(message)
 	{
 		case MsgStop : 
-			mq->PutMessage(boost::shared_ptr<Message>(EventFactory::makeEvent(EVENT_ID_PLAYING_FINISHED)));
+			mq->PutMessage(EventFactory::makeEvent(EVENT_ID_PLAYING_FINISHED));
             LOG(logINFO)<< __FUNCTION__ << "<<MsgStop, Emit the Play finished>>"; 
             break;
 		return 0;	
