@@ -4,9 +4,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
-#include "Message.hpp"
+#include "StateChart.hpp"
 
-typedef boost::statechart::event_base Message;
+typedef Event Message;
 
 class MessageQueue{
 
@@ -20,22 +20,22 @@ public:
         boost::mutex::scoped_lock lock(mutex_);
         return messages_.empty();
     }
-    boost::shared_ptr<Message> GetMessage(){
+    Message* GetMessage(){
         if( !IsEmpty()){
             boost::mutex::scoped_lock lock(mutex_);
-            boost::shared_ptr<Message> msg = messages_.front();
+            Message* msg = messages_.front();
             messages_.pop();
             return msg;
         }else{
             boost::mutex::scoped_lock lock(con_mutex_);
             condition_.wait(con_mutex_);
             boost::mutex::scoped_lock lock2(mutex_);
-            boost::shared_ptr<Message> msg = messages_.front();
+            Message* msg = messages_.front();
             messages_.pop();
             return msg;
         }
     }
-    void PutMessage(const boost::shared_ptr<Message>& msg){
+    void PutMessage(Message* msg){
         if( is_destructed ){return;}
         boost::mutex::scoped_lock lock(mutex_);
         messages_.push(msg);
@@ -43,7 +43,7 @@ public:
     }
 
 private:
-    std::queue<boost::shared_ptr<Message> > messages_;
+    std::queue<Message*> messages_;
     boost::mutex mutex_;
     boost::mutex con_mutex_;
     boost::condition_variable_any condition_;

@@ -1,61 +1,62 @@
 #ifndef LING_MESSAGE_HPP
 #define LING_MESSAGE_HPP
+#include "StateChart.hpp"
 #include <iostream>
 #include <string>
-#include <boost/statechart/event.hpp> 
-namespace fsm = boost::statechart;
 
-//打开文件
-struct OpenFileEvent: public fsm::event< OpenFileEvent >{
+
+enum {
+    EVENT_ID_OPEN_FILE = 0,
+    EVENT_ID_UPDATE_POS,
+    EVENT_ID_SET_START_POS,
+    EVENT_ID_SET_END_POS,
+    EVENT_ID_STOP_FILE,
+    EVENT_ID_CONTINUE_PLAY,
+    EVENT_ID_START_REPEAT,
+    EVENT_ID_SET_POS,
+    EVENT_ID_PAUSE_RESUME,
+    EVENT_ID_TERMINATE,
+    EVENT_ID_PLAYING_FINISHED,
+    EVENT_ID_SAVE_SECTION,
+    EVENT_ID_REQUEST_PAINT_INFO,
+    EVENT_ID_REQUEST_CONTEXT_MENU_INFO
+};
+
+struct OpenFileEvent{
     const std::wstring file_name;
     explicit OpenFileEvent(const std::wstring p_file_name):file_name(p_file_name){}
 };
 
-std::ostream& operator<< (std::ostream& os, const OpenFileEvent& evt);
-
-//更新播放进度
-struct UpdatePosEvent: public fsm::event< UpdatePosEvent >{
-};
-std::ostream& operator<< (std::ostream& os, const UpdatePosEvent& evt);
-
-//设置开始点
-struct SetStartPosEvent: public fsm::event < SetStartPosEvent >{
-};
-
-std::ostream& operator<< (std::ostream& os, const SetStartPosEvent& evt);
-
-//设置结束点
-struct SetEndPosEvent: public fsm::event < SetEndPosEvent >{
-};
-
-std::ostream& operator<< (std::ostream& os, const SetEndPosEvent& evt);
-
-//文件播放完毕
-struct StopFileEvent: public fsm::event< StopFileEvent>{};
-
-//继续播放
-struct ContinuePlayEvent: public fsm::event< ContinuePlayEvent >{};
-
-struct StartRepeatEvent: public fsm::event< StartRepeatEvent > {};
-
-struct SetPosEvent: public fsm::event< SetPosEvent >{
+struct SetPosEvent{
     long pos;
     explicit SetPosEvent(long p):pos(p){}
 };
-//暂停播放
-struct PauseResumeEvent: public fsm::event< PauseResumeEvent>{};
-//terminate the fsm
-struct TerminateEvent: public fsm::event <TerminateEvent>{};
 
-struct PlayFinishedEvent: public fsm::event< PlayFinishedEvent>{};
-struct SaveSectionEvent: public fsm::event< SaveSectionEvent>{};
-
-struct RequestPaintInfoEvent: public fsm::event<RequestPaintInfoEvent>{};
-
-struct RequestContextMenuInfoEvent: public fsm::event<RequestContextMenuInfoEvent>{
+struct RequestContextMenuInfoEvent{
     long pos_;
     int x_;
     int y_;
     RequestContextMenuInfoEvent(long pos, long x, long y): pos_(pos), x_(x), y_(y){}
 };
+
+class EventFactory {
+public:
+    static Event* makeEvent(int event_id){
+        return new Event(event_id, 0, 0);
+    }
+    static Event* makeOpenFileEvent(std::wstring filename) {
+        OpenFileEvent* ofe = new OpenFileEvent(filename);
+        return new Event(EVENT_ID_OPEN_FILE, ofe, sizeof(OpenFileEvent));
+    }
+    static Event* makeSetPosEvent(long pos) {
+        SetPosEvent* spe = new SetPosEvent(pos);
+        return new Event(EVENT_ID_SET_POS, spe, sizeof(SetPosEvent));
+    }
+
+    static Event* makeRequestContextMenuInfoEvent(long pos, long x, long y) {
+        RequestContextMenuInfoEvent* e = new RequestContextMenuInfoEvent(pos, x, y);
+        return new Event(EVENT_ID_REQUEST_CONTEXT_MENU_INFO, e, sizeof(RequestContextMenuInfoEvent));
+    }
+};
+    
 #endif

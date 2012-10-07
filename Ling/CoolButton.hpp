@@ -27,7 +27,6 @@ public:
 
     LONG OnMouseMove(UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandled)
     {
-        LOG(logDEBUG1) << __FUNCTION__ ;
         if (_bMouseTrack)
         {
             TRACKMOUSEEVENT csTME;
@@ -42,7 +41,6 @@ public:
     }
     LONG OnMouseLeave(UINT uMsg,WPARAM wParam,LPARAM lParam,BOOL& bHandled)
     {
-        LOG(logDEBUG1) << __FUNCTION__ ;
         _bMouseTrack = true ;
         Invalidate();
         return 0;

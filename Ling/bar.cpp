@@ -3,6 +3,7 @@
 #include "MainWindow.hpp"
 #include "UiInterface.hpp"
 #include "Theme.hpp"
+#include "Message.hpp"
 
 ProgressBar::ProgressBar(CMainDlg& main_window)
 :main_window_(main_window), length_(0), play_brush_(NULL),
@@ -141,7 +142,7 @@ void ProgressBar::OnPaint(CDCHandle dc)
     Graphics gfx(hdc);
     DrawBackground(gfx, Sections());
     EndPaint(&ps);
-    main_window_.mq_.PutMessage(boost::shared_ptr<Message>(new RequestPaintInfoEvent()));
+	main_window_.mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_REQUEST_PAINT_INFO));
 
 }
 LRESULT ProgressBar::OnDestroy(){
@@ -167,7 +168,7 @@ LRESULT ProgressBar::OnButtonDown( UINT WPARAM, CPoint point)
 {
     long new_pos = GetPos(point);
     if(new_pos != -1){
-        main_window_.mq_.PutMessage(boost::shared_ptr<Message>(new SetPosEvent(new_pos)));
+		main_window_.mq_.PutMessage(EventFactory::makeSetPosEvent(new_pos));
     }
     return 0;
 }
@@ -218,5 +219,5 @@ void ProgressBar::DrawSection(const Section& sec)
 void ProgressBar::Redraw()
 {
     LoadTheme();
-    main_window_.mq_.PutMessage(boost::shared_ptr<Message>(new RequestPaintInfoEvent()));
+	main_window_.mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_REQUEST_CONTEXT_MENU_INFO));
 }

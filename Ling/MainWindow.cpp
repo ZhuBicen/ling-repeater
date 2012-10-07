@@ -4,6 +4,8 @@
 #include "AboutDlg.h"
 #include "AtlDlgs.h"
 #include "SettingDlg.hpp"
+#include "Message.hpp"
+
 const UINT CMainDlg::TASKBAR_CREATE_MESSAGE = RegisterWindowMessage ( _T("TaskbarButtonCreated") );
 LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -102,7 +104,7 @@ LRESULT CMainDlg::OnSetting ( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bH
 LRESULT CMainDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	LOG(logINFO) << __FUNCTION__ ;
-    mq_.PutMessage(boost::shared_ptr<Message>(new TerminateEvent()));
+    mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_TERMINATE));
     //after the fsm terminated, send back message to destory the window later
     return TRUE;
 }
@@ -118,7 +120,7 @@ void CMainDlg::OnDropFiles(HDROP hDropInfo)
 {
     TCHAR fileName[256];
     ::DragQueryFile(hDropInfo, 0, fileName, 256);
-    mq_.PutMessage(boost::shared_ptr<Message>(new OpenFileEvent(fileName)));
+    mq_.PutMessage(EventFactory::makeOpenFileEvent(fileName));
 }
 void CMainDlg::OnHotKey(int nHotKeyID, UINT uModifiers, UINT uVirtKey)
 {
@@ -126,27 +128,27 @@ void CMainDlg::OnHotKey(int nHotKeyID, UINT uModifiers, UINT uVirtKey)
     //F2 设置开始点
     if(uVirtKey == VK_F2){
         LOG(logINFO) << "F2 is pressed!";
-        mq_.PutMessage(boost::shared_ptr<Message>(new SetStartPosEvent()));
+        mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_SET_START_POS));
     }
     //F3 设置结束点
     if(uVirtKey == VK_F3){
         LOG(logINFO) << "F3 is pressed!" ;
-        mq_.PutMessage(boost::shared_ptr<Message>(new SetEndPosEvent()));
+        mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_SET_END_POS));
     }
     //F4 设置为正常播放状态
     if(uVirtKey == VK_F4){
         LOG(logINFO) << "F4 is pressed!" ;
-        mq_.PutMessage(boost::shared_ptr<Message>(new ContinuePlayEvent()));
+        mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_CONTINUE_PLAY));
     }
     //F5 pause or resume
     if(uVirtKey == VK_F5){
         LOG(logINFO) << "F5 is pressed!" ;
-        mq_.PutMessage(boost::shared_ptr<Message>(new PauseResumeEvent()));
+        mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_PAUSE_RESUME));
     }
 }
 void CMainDlg::OnTimer(UINT_PTR nIDEvent)
 {
-    mq_.PutMessage(boost::shared_ptr<Message>(new UpdatePosEvent()));
+    mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_UPDATE_POS));
 }
 LRESULT CMainDlg::OnStartTimer (UINT uMsg, WPARAM, LPARAM, BOOL& bHandled)
 {
@@ -167,7 +169,7 @@ LRESULT CMainDlg::OnContextMenu(HWND , CPoint point)
     CPoint p = point;
     ::ScreenToClient(bar_.m_hWnd, &p);
     long pos = bar_.GetPos(p);
-    mq_.PutMessage(boost::shared_ptr<Message>(new RequestContextMenuInfoEvent(pos, point.x, point.y)));
+    mq_.PutMessage(EventFactory::makeRequestContextMenuInfoEvent(pos, point.x, point.y));
     return 0;
 }
 LRESULT CMainDlg::OnTaskbarBtnCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -328,7 +330,7 @@ void CMainDlg::Redraw()
 LRESULT CMainDlg::OnMarkButtonClicked( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled )
 {
     LOG(logINFO)<< __FUNCTION__ ;
-    mq_.PutMessage(boost::shared_ptr<Message>(new SaveSectionEvent()));
+	mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_SAVE_SECTION));
     return TRUE;
 }
 LRESULT CMainDlg::OnPinButtonClicked( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled )
@@ -352,13 +354,13 @@ LRESULT CMainDlg::OnOpenMediaFile(UINT , int menu_id, HWND)
 {
 
     LOG(logINFO) << menu_id <<" " << path(media_files_[menu_id]) ;
-    mq_.PutMessage(boost::shared_ptr<Message>(new OpenFileEvent(media_files_[menu_id])));
+    mq_.PutMessage(EventFactory::makeOpenFileEvent(media_files_[menu_id]));
     return TRUE;
 }
 LRESULT CMainDlg::OnPauseResumeButtonClicked( WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL &bHandled )
 {
 	LOG(logINFO) << __FUNCTION__ ;
-    mq_.PutMessage(boost::shared_ptr<Message>(new PauseResumeEvent()));
+    mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_PAUSE_RESUME));
     return TRUE;
 }
 UINT CMainDlg::OnNcHitTest(CPoint point)
@@ -393,7 +395,7 @@ LRESULT CMainDlg::OnOpen(WORD, WORD, HWND, BOOL&)
         LPWSTR lpFilePath = cFilePath.m_ofn.lpstrFile;
         Player player(NULL);
         if (player.IsSupport(lpFilePath)){
-            mq_.PutMessage(boost::shared_ptr<Message>(new OpenFileEvent(lpFilePath)));
+            mq_.PutMessage(EventFactory::makeOpenFileEvent(lpFilePath));
         }else{
             ::MessageBox(m_hWnd, L"不能识别的文件！", L"ERROR", MB_OK);
         }
