@@ -2,12 +2,22 @@
 #define STATE_CHART_HPP
 #include <string>
 #include <vector>
+
+// TODO free the memory of data
 class Event {
 public:
     Event(int id, void* data, int length): id_(id), data_(data), length_(length){}
 	int Id()const { return id_;}
     void* Data(){ return data_;}
     int Length(){ return length_;}
+	~Event(){
+        if (data_){
+            free(data_);
+            data_ = 0;
+            length_ = 0;
+        }
+    }
+		
 private:
     int id_;
     void* data_;

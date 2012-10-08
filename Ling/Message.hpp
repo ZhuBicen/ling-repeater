@@ -45,16 +45,19 @@ public:
         return new Event(event_id, 0, 0);
     }
     static Event* makeOpenFileEvent(std::wstring filename) {
-        OpenFileEvent* ofe = new OpenFileEvent(filename);
+        void* data = malloc(sizeof(OpenFileEvent));
+        OpenFileEvent* ofe = new(data) OpenFileEvent(filename);
         return new Event(EVENT_ID_OPEN_FILE, ofe, sizeof(OpenFileEvent));
     }
     static Event* makeSetPosEvent(long pos) {
-        SetPosEvent* spe = new SetPosEvent(pos);
+        void* data = malloc(sizeof(SetPosEvent));
+        SetPosEvent* spe = new(data) SetPosEvent(pos);
         return new Event(EVENT_ID_SET_POS, spe, sizeof(SetPosEvent));
     }
 
     static Event* makeRequestContextMenuInfoEvent(long pos, long x, long y) {
-        RequestContextMenuInfoEvent* e = new RequestContextMenuInfoEvent(pos, x, y);
+        void* data = malloc(sizeof(RequestContextMenuInfoEvent));
+        RequestContextMenuInfoEvent* e = new (data) RequestContextMenuInfoEvent(pos, x, y);
         return new Event(EVENT_ID_REQUEST_CONTEXT_MENU_INFO, e, sizeof(RequestContextMenuInfoEvent));
     }
 };
