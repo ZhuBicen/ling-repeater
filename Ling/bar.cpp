@@ -219,5 +219,5 @@ void ProgressBar::DrawSection(const Section& sec)
 void ProgressBar::Redraw()
 {
     LoadTheme();
-	main_window_.mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_REQUEST_CONTEXT_MENU_INFO));
+	main_window_.mq_.PutMessage(EventFactory::makeEvent(EVENT_ID_REQUEST_PAINT_INFO));
 }

@@ -11,12 +11,5 @@ std::ostream& operator<< (std::ostream& os, const OpenFileEvent& evt){
     return os;
 }
 std::ostream& operator<< (std::ostream& os, const Event& evt){
-	if (evt.Id() == EVENT_ID_UPDATE_POS) {
-		return os << " UpdatePosEvent ";
-	}else if( evt.Id() == EVENT_ID_SET_START_POS) {
-		return os << " SetStartPosEvent ";
-	}else if ( evt.Id() == EVENT_ID_SET_END_POS) {
-		return os << " SetEndPosEvent ";
-	}
-	return os;
+    return os << "#"<< evt.Id();
 }

@@ -49,7 +49,7 @@ bool PlayerSc::Init(){
 
 // Waiting for file state
 bool PlayerSc::waitingForFileStateHandler(Event* evt){
-    debug << __FUNCTION__ << evt;
+    debug << __FUNCTION__ << *evt;
     switch (evt->Id())
     {
     case EVENT_ID_OPEN_FILE:
@@ -65,7 +65,7 @@ bool PlayerSc::waitingForFileStateHandler(Event* evt){
         ui_->DrawBar(pi);
         return true;
     }        
-    debug << __FUNCTION__ << " discard message " << evt;
+    debug << __FUNCTION__ << " discard message" << evt;
     return false;
 }
 
@@ -79,7 +79,7 @@ void PlayerSc::waitingForFileStateExitAction(){
 
 // Handling file state
 bool PlayerSc::handlingFileStateHandler(Event* evt){
-    debug << __FUNCTION__;
+    debug << __FUNCTION__ << *evt;
     switch(evt->Id()){
     case EVENT_ID_OPEN_FILE:
     {
@@ -107,7 +107,7 @@ bool PlayerSc::handlingFileStateHandler(Event* evt){
         return true;
     }
     default:
-        debug << __FUNCTION__ << " discard message";
+        debug << __FUNCTION__ << " discard message" << *evt;
     }
 
     return false;
@@ -128,13 +128,14 @@ void PlayerSc::handlingFileStateExitAction(){
 // Playing State
 /////////////////////////////////////////////////
 bool PlayerSc::playingStateHandler(Event* evt){
+    debug << __FUNCTION__ << *evt;
     switch (evt->Id()){
     case EVENT_ID_PAUSE_RESUME:
         player_.Pause();
         StateTransition(&pausing_state_);
         return true;
     default:
-        debug << " discard message";
+        debug << __FUNCTION__ << " discard message" << *evt;
         return false;
     }
     return false;
@@ -163,6 +164,7 @@ void PlayerSc::normalPlayingEntryAction(){
     player_.Play();
 }
 bool PlayerSc::normalPlayingStateHandler(Event* evt){
+    debug << __FUNCTION__ << *evt;
     switch (evt->Id()){
     case EVENT_ID_UPDATE_POS:
     {
@@ -222,7 +224,7 @@ bool PlayerSc::normalPlayingStateHandler(Event* evt){
         return true;
     }
     default:
-        debug << " discard message";
+        debug << __FUNCTION__ << " discard message" << *evt;
         return false;
     }
     return false;
@@ -240,7 +242,7 @@ void PlayerSc::repeatedPlayingEntryAction(){
 }
 
 bool PlayerSc::repeatedPlayingStateHandler(Event* evt){
-
+    debug << __FUNCTION__ << *evt;
     switch (evt->Id()){
 	case EVENT_ID_UPDATE_POS:
     {
@@ -314,7 +316,7 @@ bool PlayerSc::repeatedPlayingStateHandler(Event* evt){
         return true;
     }
     default:
-        debug << " discard message";
+        debug << __FUNCTION__ << " discard message" << *evt;
         return false;
     }
     return false;
@@ -332,7 +334,7 @@ void PlayerSc::pausingStateEntryAction(){
 
 }
 bool PlayerSc::pausingStateHandler(Event* evt){
-
+debug << __FUNCTION__ << *evt;
     switch (evt->Id()){
     case EVENT_ID_REQUEST_PAINT_INFO:
     {
@@ -347,7 +349,7 @@ bool PlayerSc::pausingStateHandler(Event* evt){
 		StateTransition(playing_state_.DeepHistory());
 		return true;
     default:
-        debug << " discard message";
+        debug << __FUNCTION__ << " discard message" << *evt;
         return false;
     }
     return false;

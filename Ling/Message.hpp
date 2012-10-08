@@ -38,6 +38,7 @@ struct RequestContextMenuInfoEvent{
     int y_;
     RequestContextMenuInfoEvent(long pos, long x, long y): pos_(pos), x_(x), y_(y){}
 };
+std::ostream& operator<< (std::ostream& os, const Event& evt);
 
 class EventFactory {
 public:
