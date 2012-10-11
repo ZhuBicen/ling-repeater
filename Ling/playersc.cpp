@@ -91,7 +91,7 @@ bool PlayerSc::handlingFileStateHandler(Event* evt){
 
         // open the new file
         player_.OpenFile(file_name_);
-        json_.GetFileInfo(file_name_);
+        file_info_ = json_.GetFileInfo(file_name_);
         ui_->SetFileInfo(file_info_, getFileLength());
         // transit next state
         StateTransition(&normal_playing_state_);
@@ -117,7 +117,7 @@ void PlayerSc::handlingFileStateEntryAction(){
     start_pos_ = end_pos_ = current_pos_ = previous_pos_ = 0;
     player_.OpenFile(file_name_);
     // update UI
-    json_.GetFileInfo(file_name_);
+    file_info_ = json_.GetFileInfo(file_name_);
     ui_->SetFileInfo(file_info_, getFileLength());
 }
     
