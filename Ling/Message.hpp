@@ -22,6 +22,8 @@ enum {
     EVENT_ID_REQUEST_CONTEXT_MENU_INFO
 };
 
+std::string messageIdToString(int eventId);
+
 struct OpenFileEvent{
     const std::wstring file_name;
     explicit OpenFileEvent(const std::wstring p_file_name):file_name(p_file_name){}

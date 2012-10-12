@@ -11,5 +11,25 @@ std::ostream& operator<< (std::ostream& os, const OpenFileEvent& evt){
     return os;
 }
 std::ostream& operator<< (std::ostream& os, const Event& evt){
-    return os << "#"<< evt.Id();
+    return os << "#"<< messageIdToString(evt.Id());
+}
+#define caseEventId(x) case x: return std::string(#x)
+std::string messageIdToString(int eventId){
+    switch (eventId){
+        caseEventId(EVENT_ID_OPEN_FILE);
+        caseEventId(EVENT_ID_UPDATE_POS);
+        caseEventId(EVENT_ID_SET_START_POS);
+        caseEventId(EVENT_ID_SET_END_POS);
+        caseEventId(EVENT_ID_STOP_FILE);
+        caseEventId(EVENT_ID_CONTINUE_PLAY);
+        caseEventId(EVENT_ID_START_REPEAT);
+        caseEventId(EVENT_ID_SET_POS);
+        caseEventId(EVENT_ID_PAUSE_RESUME);
+        caseEventId(EVENT_ID_TERMINATE);
+        caseEventId(EVENT_ID_PLAYING_FINISHED);
+        caseEventId(EVENT_ID_SAVE_SECTION);
+        caseEventId(EVENT_ID_REQUEST_PAINT_INFO);
+        caseEventId(EVENT_ID_REQUEST_CONTEXT_MENU_INFO);
+    }
+    return "Unkonwn Message id";
 }
