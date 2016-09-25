@@ -48,7 +48,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm115"
+				AdditionalOptions="-Zm200"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;..\libzplay-2.02-sdk\C++&quot;;..\json_spirit"
 				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG"

@@ -10,6 +10,7 @@
 #include "CoolButton.hpp"
 #include "resource.h"
 #include "Theme.hpp"
+#include "Shobjidl.h"
 ///////////////////////////////////////////
 //How to define this min & max value, maybe conflict with the ID in resource.h?
 #define ID_FIRST_MEDIA_FILE 3000
